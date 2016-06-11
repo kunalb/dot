@@ -1,0 +1,346 @@
+;;; Kunal's emacs configuration
+
+;;; Packages
+(package-initialize)
+(setq package-archives
+ '(("melpa" . "http://melpa.org/packages/")
+   ("gnu" . "https://elpa.gnu.org/packages/")
+   ("org" . "http://orgmode.org/elpa/")))
+
+;;; Evil Mode, can't do anything without it!
+(setq evil-want-C-i-jump nil)
+(evil-mode)
+
+;;; Enable mouse support
+(xterm-mouse-mode)
+
+;;; I always make this typo, just Make It Work
+(evil-ex-define-cmd "W[rite]" 'save-buffer)
+
+;;; Minimal UI
+(tool-bar-mode -1)
+
+(if (boundp 'fringe-mode)
+    (fringe-mode 0))
+
+(if (not window-system)
+    (menu-bar-mode -1))
+
+(if (boundp 'scroll-bar-mode)
+    (scroll-bar-mode -1))
+
+(setq ring-bell-function 'ignore)
+(setq inhibit-startup-message t)
+
+;;; Get emamux
+(require 'emamux)
+
+;;; Clean up on save
+(add-hook 'before-save-hook 'whitespace-cleanup)
+
+;;; Truncate lines
+(set-default 'truncate-lines t)
+(setq truncate-partial-width-windows t)
+
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(ansi-color-names-vector
+   ["#272822" "#F92672" "#A6E22E" "#E6DB74" "#66D9EF" "#FD5FF0" "#A1EFE4" "#F8F8F2"])
+ '(cider-lein-command "/usr/local/bin/lein")
+ '(company-idle-delay 0.2)
+ '(compilation-message-face (quote default))
+ '(css-indent-offset 2)
+ '(custom-safe-themes
+   (quote
+    ("b7ba8bd70d2c954e326144c5bf11eecffd55683dfa76aa16bc53572a6184bc1d" "222113f148cd70d99c44d84bf4e3a76795f001bd6cfd449b7ff27aeda65ffd78" "0371ea3962f89505580bb2f346f96decfd7c2147e0ee6811951b1239d2ebddcc" "5a0eee1070a4fc64268f008a4c7abfda32d912118e080e18c3c865ef864d1bea" "6b565d968c483b6f05080cb2d3d4bd36730a3354b5c4e8c88edc0128c61dcaa5" "49528fb89fbcf6da23e88fcb98c3fcd21d20e57ee1a1cf686182ae093b0f6bf9" "f97f0e5769e60795806044a0b179a846d62c9093f8f393069b782bf28fbf06c5" "1294340a75accf657d07262ce5a012fa576594e8d4eebd7fd37ef792e6a21e26" "bf81a86f9cfa079a7bb9841bc6ecf9a2e8999b85e4ae1a4d0138975921315713" "e2e4e109357cfcebccb17961950da6b84f72187ade0920a4494013489df648fe" "82cbb553a225b75ee49901fa06562941fbfe5e6fed24cda985e7ea59af7ddc80" "e681c4fc684a543ce97c2d55082c6585182c0089f605dc9a5fe193870f03edc6" "c70cc9c4c6257d70f5c11b90cb9e8b1e54e6edd6aa43f39879746e16a70533f5" "890d09dcc8d2326e98eee74b307b2cc42f07ab7701bcff521e6152aa3e08f7a8" "a7b47876e5da7cac6f5e61cca7a040a365ca2c498823654bd4076add8edf34c5" "b4ec581daad15aa7020b722523dc6bcea850bfbdbe31bfeb11c45ea51899bd75" "e8e744a1b0726814ac3ab86ad5ccdf658b9ff1c5a63c4dc23841007874044d4a" "09669536b4a71f409e7e2fd56609cd7f0dff2850d4cbfb43916cc1843c463b80" "cb18233197cedab557c70d171b511bed49cc702f428750925280090c31498bd2" "e24679edfdea016519c0e2d4a5e57157a11f928b7ef4361d00c23a7fe54b8e01" "b1bcb837df0455af8e91114b7a3bddfa084cde32ceb16b1b468d5e5e8605a835" "e1551b5516e0a439b6ab019ba00cee866e735f66f22ff67a5d882ad0f1383454" "101a10b15bbbd0d5a0e56e4773e614962197886780afb2d62523a63a144ad96c" "1edf370d2840c0bf4c031a044f3f500731b41a3fd96b02e4c257522c7457882e" "91fba9a99f7b64390e1f56319c3dbbaed22de1b9676b3c73d935bf62277b799c" "d43120398682953ef18fd7e11e69c94e44d39bb2ab450c4e64815311542acbff" "d5aac94c0051c3acec2b274347b343372b4e64c3e226be7b7c56725ea26b1ba8" "b6db49cec08652adf1ff2341ce32c7303be313b0de38c621676122f255ee46db" "03e3e79fb2b344e41a7df897818b7969ca51a15a67dc0c30ebbdeb9ea2cd4492" "43aeadb0c8634a9b2f981ed096b3c7823c511d507a51c604e4667becb5ef6e35" "9f6750057fefba39c184783c7b80ddd9c63bc6e8064846b423b4362c9e930404" "aa87469691932ff791f966bffb885ecd97ebfa4dc4d42e479f3819ac4a3fbcaf" "930227e22122d1881db7c2c1ae712dcf715697a1c4d9864f8107a2c3c2da9f8b" "8e3f020f1ce69cfa0c1ebee4e198feb28dd7eb31b7d77927e9c790819210c654" "db9feb330fd7cb170b01b8c3c6ecdc5179fc321f1a4824da6c53609b033b2810" "f21caace402180ab3dc5157d2bb843c4daafbe64aadc362c9f4558ac17ce43a2" "ad68cb14359254795c6b96d76334aaacb739c04f64a4a8567964d4a20aa723d2" "75c0b9f9f90d95ac03f8647c75a91ec68437c12ff598e2abb22418cd4b255af0" "1462969067f2ff901993b313085d47e16badeec58b63b9ed67fa660cebaaddae" "cb8039d38d197de5049bd2e0e57b0a9001d89d820c3b36c945a12d6b5198e810" "d1a42ed39a15a843cccadf107ee0242b5f78bfbb5b70ba3ce19f3ea9fda8f52d" "f2503f0a035c2122984e90eb184185769ee665de5864edc19b339856942d2d2d" "e8bba3c8e8caea2c7a8b6932b0db8d9bdb468c9b44bf554f37b56093d23fde57" "76bd62f6ce376bf0597fab7f478eaa98cd94a7b41f0ae46de63a958fbe99c1d9" "f245c9f24b609b00441a6a336bcc556fe38a6b24bfc0ca4aedd4fe23d858ba31" "0b6645497e51d80eda1d337d6cabe31814d6c381e69491931a688836c16137ed" "9a77026c04c2b191637239d0a2374b2cf019eb457a216f6ecc391a4a42f6ed08" "c74e83f8aa4c78a121b52146eadb792c9facc5b1f02c917e3dbb454fca931223" "b04425cc726711a6c91e8ebc20cf5a3927160681941e06bc7900a5a5bfe1a77f" "3c83b3676d796422704082049fc38b6966bcad960f896669dfc21a7a37a748fa" "3cc2385c39257fed66238921602d8104d8fd6266ad88a006d0a4325336f5ee02" "72a81c54c97b9e5efcc3ea214382615649ebb539cb4f2fe3a46cd12af72c7607" "55f6eadaf7f83064f54b6a47a3161ac3095e21496bdbfe4d6645c10d951f8ed3" "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855" "8aa7eb0cc23931423f719e8b03eb14c4f61aa491e5377073d6a55cba6a7bc125" "bffa9739ce0752a37d9b1eee78fc00ba159748f50dc328af4be661484848e476" "5d1434865473463d79ee0523c1ae60ecb731ab8d134a2e6f25c17a2b497dd459" "3625c04fa4b8a802e96922d2db3f48c9cb2f93526e1dc24ba0b400e4ee4ccd8a" "2916d16e583c17bb2a1a9d231ea8ddcb3577f8cb97179eea689e91036213ff03" "0c311fb22e6197daba9123f43da98f273d2bfaeeaeb653007ad1ee77f0003037" "8fed5e4b89cf69107d524c4b91b4a4c35bcf1b3563d5f306608f0c48f580fdf8" "0a1a7f64f8785ffbf5b5fbe8bca1ee1d9e1fb5e505ad9a0f184499fe6747c1af" "bac3f5378bc938e96315059cd0488d6ef7a365bae73dac2ff6698960df90552d" "d8f76414f8f2dcb045a37eb155bfaa2e1d17b6573ed43fb1d18b936febc7bbc2" "dc261a3614777e08f8c8f70d7cf63215786eafeedae45fc7f062c614eabf584c" "19352d62ea0395879be564fc36bc0b4780d9768a964d26dfae8aad218062858d" "51b8c4adab95ff23b8f5cf07ea0b9805c8662936fe0d877d61a0dd02b6adc5f6" "868f73b5cf78e72ca2402e1d48675e49cc9a9619c5544af7bf216515d22b58e7" "ad950f1b1bf65682e390f3547d479fd35d8c66cafa2b8aa28179d78122faa947" "4f5bb895d88b6fe6a983e63429f154b8d939b4a8c581956493783b2515e22d6d" "40bc0ac47a9bd5b8db7304f8ef628d71e2798135935eb450483db0dbbfff8b11" "603a9c7f3ca3253cb68584cb26c408afcf4e674d7db86badcfe649dd3c538656" default)))
+ '(emamux:use-nearest-pane t)
+ '(exec-path
+   (quote
+    ("/usr/local/bin" "/usr/bin" "/bin" "/usr/sbin" "/sbin" "/Applications/Emacs.app/Contents/MacOS/bin-x86_64-10_9" "/Applications/Emacs.app/Contents/MacOS/libexec-x86_64-10_9" "/Applications/Emacs.app/Contents/MacOS/libexec" "/Applications/Emacs.app/Contents/MacOS/bin" "/usr/local/bin")))
+ '(fci-rule-color "#49483E")
+ '(highlight-changes-colors (quote ("#FD5FF0" "#AE81FF")))
+ '(highlight-tail-colors
+   (quote
+    (("#49483E" . 0)
+     ("#67930F" . 20)
+     ("#349B8D" . 30)
+     ("#21889B" . 50)
+     ("#968B26" . 60)
+     ("#A45E0A" . 70)
+     ("#A41F99" . 85)
+     ("#49483E" . 100))))
+ '(inf-clojure-program "planck")
+ '(inferior-R-program-name "/usr/local/bin/R")
+ '(js-indent-level 2)
+ '(magit-diff-use-overlays nil)
+ '(org-agenda-dim-blocked-tasks (quote invisible))
+ '(org-agenda-files
+   (quote
+    ("~/active/org/new/life.org" "~/active/org/new/schedule.org")))
+ '(org-agenda-skip-scheduled-if-done t)
+ '(org-agenda-span 7)
+ '(org-agenda-start-on-weekday nil)
+ '(org-agenda-window-setup (quote current-window))
+ '(org-allow-promoting-top-level-subtree t)
+ '(org-archive-location "%s.archive::")
+ '(org-babel-load-languages
+   (quote
+    ((emacs-lisp . t)
+     (C . t)
+     (haskell . t)
+     (scheme . t)
+     (js . t)
+     (java . t)
+     (dot . t))))
+ '(org-bullets-bullet-list (quote ("○")))
+ '(org-completion-use-ido t)
+ '(org-confirm-babel-evaluate nil)
+ '(org-enforce-todo-dependencies t)
+ '(org-hide-leading-stars t)
+ '(org-modules
+   (quote
+    (org-bbdb org-bibtex org-docview org-gnus org-habit org-info org-irc org-mhe org-rmail org-w3m)))
+ '(org-src-lang-modes
+   (quote
+    (("sql" . sql)
+     ("ocaml" . tuareg)
+     ("elisp" . emacs-lisp)
+     ("ditaa" . artist)
+     ("asymptote" . asy)
+     ("dot" . graphviz-dot)
+     ("sqlite" . sql)
+     ("calc" . fundamental)
+     ("C" . c)
+     ("cpp" . c++)
+     ("C++" . c++)
+     ("screen" . shell-script))))
+ '(org-tags-column -100)
+ '(picolisp-picolisp-executable "/usr/local/bin/picolisp")
+ '(picolisp-pil-executable "/usr/local/bin/picolisp")
+ '(show-paren-delay 0.04)
+ '(show-paren-mode t)
+ '(sml/mode-width
+   (if
+       (eq
+        (powerline-current-separator)
+        (quote arrow))
+       (quote right)
+     (quote full)))
+ '(sml/pos-id-separator
+   (quote
+    (""
+     (:propertize " " face powerline-active1)
+     (:eval
+      (propertize " "
+                  (quote display)
+                  (funcall
+                   (intern
+                    (format "powerline-%s-%s"
+                            (powerline-current-separator)
+                            (car powerline-default-separator-dir)))
+                   (quote powerline-active1)
+                   (quote powerline-active2))))
+     (:propertize " " face powerline-active2))))
+ '(sml/pos-minor-modes-separator
+   (quote
+    (""
+     (:propertize " " face powerline-active1)
+     (:eval
+      (propertize " "
+                  (quote display)
+                  (funcall
+                   (intern
+                    (format "powerline-%s-%s"
+                            (powerline-current-separator)
+                            (cdr powerline-default-separator-dir)))
+                   (quote powerline-active1)
+                   nil)))
+     (:propertize " " face sml/global))))
+ '(sml/pre-id-separator
+   (quote
+    (""
+     (:propertize " " face sml/global)
+     (:eval
+      (propertize " "
+                  (quote display)
+                  (funcall
+                   (intern
+                    (format "powerline-%s-%s"
+                            (powerline-current-separator)
+                            (car powerline-default-separator-dir)))
+                   nil
+                   (quote powerline-active1))))
+     (:propertize " " face powerline-active1))))
+ '(sml/pre-minor-modes-separator
+   (quote
+    (""
+     (:propertize " " face powerline-active2)
+     (:eval
+      (propertize " "
+                  (quote display)
+                  (funcall
+                   (intern
+                    (format "powerline-%s-%s"
+                            (powerline-current-separator)
+                            (cdr powerline-default-separator-dir)))
+                   (quote powerline-active2)
+                   (quote powerline-active1))))
+     (:propertize " " face powerline-active1))))
+ '(sml/pre-modes-separator (propertize " " (quote face) (quote sml/modes)))
+ '(spacemacs-theme-org-height nil)
+ '(tool-bar-mode nil)
+ '(vc-annotate-background nil)
+ '(vc-annotate-color-map
+   (quote
+    ((20 . "#F92672")
+     (40 . "#CF4F1F")
+     (60 . "#C26C0F")
+     (80 . "#E6DB74")
+     (100 . "#AB8C00")
+     (120 . "#A18F00")
+     (140 . "#989200")
+     (160 . "#8E9500")
+     (180 . "#A6E22E")
+     (200 . "#729A1E")
+     (220 . "#609C3C")
+     (240 . "#4E9D5B")
+     (260 . "#3C9F79")
+     (280 . "#A1EFE4")
+     (300 . "#299BA6")
+     (320 . "#2896B5")
+     (340 . "#2790C3")
+     (360 . "#66D9EF"))))
+ '(vc-annotate-very-old-color nil)
+ '(vc-handled-backends nil)
+ '(weechat-color-list
+   (unspecified "#272822" "#49483E" "#A20C41" "#F92672" "#67930F" "#A6E22E" "#968B26" "#E6DB74" "#21889B" "#66D9EF" "#A41F99" "#FD5FF0" "#349B8D" "#A1EFE4" "#F8F8F2" "#F8F8F0")))
+
+;;; Theme
+(add-to-list 'custom-theme-load-path "~/.emacs.d/themes")
+(load-theme 'ujelly)
+(set-face-attribute 'mode-line nil :height 120 :box nil)
+(set-face-attribute 'mode-line-inactive nil :height 120 :box nil)
+
+;;; Enable ido mode and smex
+(setq ido-enable-flex-matching t)
+(setq ido-everywhere t)
+(ido-mode 1)
+(global-set-key (kbd "M-x") 'smex)
+(global-set-key (kbd "M-SPC") 'smex) ;; let's test this out
+(global-set-key (kbd "M-X") 'smex-major-mode-commands)
+(global-set-key (kbd "C-c C-c M-x") 'execute-extended-command)
+
+;;; 2-space all the things
+(setq c-basic-offset 2)
+(setq tab-width 2)
+(setq-default indent-tabs-mode nil)
+
+;;; Backups
+;;; Disable auto-save
+(setq auto-save-default nil)
+(setq backup-directory-alist
+      `((".*" . ,temporary-file-directory)))
+(setq auto-save-file-name-transforms
+      `((".*" ,temporary-file-directory t)))
+
+;;; Try to only do vsplits instead of splits
+(setq split-height-threshold 'nil)
+(setq split-width-threshold 200)
+
+;;; Get smartparens started
+(require 'smartparens-config)
+(add-hook 'prog-mode-hook 'turn-on-smartparens-mode)
+(define-key smartparens-mode-map (kbd "M-f") 'sp-forward-slurp-sexp)
+(define-key smartparens-mode-map (kbd "M-b") 'sp-backward-slurp-sexp)
+(define-key smartparens-mode-map (kbd "M-F") 'sp-forward-barf-sexp)
+(define-key smartparens-mode-map (kbd "M-B") 'sp-backward-barf-sexp)
+(define-key smartparens-mode-map (kbd "M-s") 'sp-splice-sexp)
+(define-key smartparens-mode-map (kbd "C-k") 'sp-kill-sexp)
+
+;;; Language specific
+
+(show-paren-mode 't)
+
+;;; Scheme
+(setq scheme-program-name "/usr/local/bin/csi -:c")
+
+;;; Org mode
+(define-key global-map "\C-cc" 'org-capture)
+(define-key global-map "\C-ca" 'org-agenda)
+
+(setq org-enforce-todo-dependencies 't)
+
+;;; Org mode custom agendas
+(setq org-agenda-custom-commands
+      '(("t" search "+TODO -DEADLINE={.+} -SCHEDULED={.+} -DONE")
+        ("p" "Planning out the week"
+         ((agenda "" ((org-agenda-span 14)) "Scheduled")
+          (search "+TODO -DEADLINE -SCHEDULED -DONE -CANCELED" "Unscheduled")))))
+
+;;; Org mode capture templates
+(add-hook 'org-capture-mode-hook 'evil-insert-state)
+(setq org-capture-templates
+      '(("t" "Todo" entry (file "~/active/org/planning/todo.org")
+         "** TODO %?")
+        ("j" "Journal" entry (file+datetree "~/active/org/lists/journal.org")
+         "* %?")
+        ("i" "Idea" entry (file+headline "~/active/org/ideas/ideas.org" "Braindump")
+         "** %?")))
+
+;;; Org clock
+(setq org-clock-persist t)
+
+;;; Formatting
+(setq org-hide-emphasis-markers t)
+
+;;; Enable narrowing
+(put 'narrow-to-region 'disabled nil)
+
+;; Trigger python mode for BUCK files
+(add-to-list 'auto-mode-alist '(".*/BUCK$" . python-mode))
+
+;;; Cider
+(setq cider-test-infer-test-ns 'identity)
+(setq cider-test-show-report-on-success t)
+
+;;; Always end with a newline
+(setq require-final-newline t)
+
+;;; Org bullets
+(require 'org-bullets)
+(add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
+
+;;; Highlight code blocks
+(setq org-src-fontify-natively t)
+
+;;; Add paths
+(setq exec-path (append exec-path (getenv "PATH")))
+
+;;; Redisplay images automatically
+(add-hook
+ 'org-babel-after-execute-hook
+ (lambda()
+   (when org-inline-image-overlays
+     (org-redisplay-inline-images))))
+
+
+;;; Force font
+(set-face-attribute 'default nil :font "PT Mono:pixelsize=14")
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
+
+
+;;; Tramp
+(setq tramp-password-prompt-regexp
+      (concat "^.*" (regexp-opt '("passcode" "Passcode"
+                                  "password" "Password")
+                                t)
+              ".*:\0? *"))
+(setq tramp-default-method "sshx")
