@@ -68,18 +68,19 @@
 ** Allow some common typos
    #+BEGIN_SRC emacs-lisp
      (evil-ex-define-cmd "W[rite]" 'save-buffer)
-     (evil-ex-define-cmd "V[split]" 'evil-windo-vsplit)
+     (evil-ex-define-cmd "V[split]" 'evil-window-vsplit)
    #+END_SRC
 
 * Org
 ** Babel
-*** Better inline code editing
+*** Better source code window editing
     #+BEGIN_SRC emacs-lisp
       (setq org-src-window-setup 'other-window)
     #+END_SRC
-*** Highlight source code blocks
+*** Highlight and indent source code blocks
     #+BEGIN_SRC emacs-lisp
       (setq org-src-fontify-natively t)
+      (setq org-src-tab-acts-natively t)
     #+END_SRC
 ** UI
 *** Hide markers
