@@ -4,7 +4,10 @@
 ** Set up package archives: live on the bleeding edge.
    #+BEGIN_SRC emacs-lisp
      (require 'package)
-     (setq package-archive '(("melpa" . "https://melpa.milkbox.net/packages")))
+     (setq package-archives '(("melpa" . "http://melpa.milkbox.net/packages/")
+                              ("elpa" . "http://elpa.gnu.org/packages/")
+                              ("marmalade" . "http://marmalade-repo.org/packages/")
+                              ("org" . "http://orgmode.org/elpa/")))
      (package-initialize)
    #+END_SRC
 ** TODO List out all the packages I use and automatically install them if unavailable
