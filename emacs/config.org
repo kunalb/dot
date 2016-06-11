@@ -179,4 +179,14 @@
     #+BEGIN_SRC emacs-lisp
       (setq monky-process-type 'cmdserver)
     #+END_SRC
-*** And add suppot for a nicer log file
+*** And add support for a nicer log file
+    #+BEGIN_SRC emacs-lisp
+      (defun hg-file-history ()
+        (interactive)
+        (require 'monky)
+        (monky-run-hg-async
+         "log"
+         "--template"
+         "\n{rev}) {date|shortdate}/{author|user}\n{desc|fill68}\n↘\n"
+         buffer-file-name))
+    #+END_SRC
