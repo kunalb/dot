@@ -191,3 +191,12 @@
          "\n{rev}) {date|shortdate}/{author|user}\n{desc|fill68}\n↘\n"
          buffer-file-name))
     #+END_SRC
+* Browsing
+** Default to w3m
+   #+BEGIN_SRC emacs-lisp
+     (setq browse-url-browser-function 'w3m-browse-url)
+   #+END_SRC
+** Enable cookies
+   #+BEGIN_SRC emacs-lisp
+     (setq w3m-use-cookies t)
+   #+END_SRC
