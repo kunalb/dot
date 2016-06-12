@@ -2,204 +2,223 @@
 
 * Packages
 ** Set up package archives: live on the bleeding edge.
-   #+BEGIN_SRC emacs-lisp
-     (require 'package)
-     (setq package-archives '(("melpa" . "http://melpa.milkbox.net/packages/")
-                              ("elpa" . "http://elpa.gnu.org/packages/")
-                              ("marmalade" . "http://marmalade-repo.org/packages/")
-                              ("org" . "http://orgmode.org/elpa/")))
-     (package-initialize)
-   #+END_SRC
-** TODO List out all the packages I use and automatically install them if unavailable
+#+BEGIN_SRC emacs-lisp
+  (require 'package)
+  (setq package-archives '(("melpa" . "http://melpa.milkbox.net/packages/")
+                           ("elpa" . "http://elpa.gnu.org/packages/")
+                           ("marmalade" . "http://marmalade-repo.org/packages/")
+                           ("org" . "http://orgmode.org/elpa/")))
+  (package-initialize)
+#+END_SRC
+** TODO Use =use-package=
+List out all packages and install them if they're available.
 
 * Customization
 ** Move the file out of init.el
-   #+BEGIN_SRC emacs-lisp
-     (setq custom-file "~/.emacs.d/custom.el")
-     (load custom-file 'noerror)
-   #+END_SRC
+#+BEGIN_SRC emacs-lisp
+  (setq custom-file "~/.emacs.d/custom.el")
+  (load custom-file 'noerror)
+#+END_SRC
 
 * UI
 ** Minimal UI
-   Do this first to try to get the flicker in the gui out of the way quickly
-   #+BEGIN_SRC emacs-lisp
-     (tool-bar-mode -1)
-     (menu-bar-mode -1)
-     (if (boundp 'fringe-mode)
-     (fringe-mode -1))
-     (if (boundp 'scroll-bar-mode)
-         (scroll-bar-mode -1))
-   #+END_SRC
+Do this first to try to get the flicker in the gui out of the way quickly
+#+BEGIN_SRC emacs-lisp
+  (tool-bar-mode -1)
+  (menu-bar-mode -1)
+  (if (boundp 'fringe-mode)
+  (fringe-mode -1))
+  (if (boundp 'scroll-bar-mode)
+      (scroll-bar-mode -1))
+#+END_SRC
 ** Mouse support
-   #+BEGIN_SRC emacs-lisp
-     (xterm-mouse-mode)
-   #+END_SRC
+#+BEGIN_SRC emacs-lisp
+  (xterm-mouse-mode)
+#+END_SRC
 ** Improve theme loading; [[https://www.reddit.com/r/emacs/comments/4mzynd/what_emacs_theme_are_you_currently_using/d43c5cw][from reddit]]
-    #+BEGIN_SRC emacs-lisp
-      (defadvice load-theme (before clear-previous-themes activate)
-        "Clear existing theme settings instead of layering them"
-        (mapc #'disable-theme custom-enabled-themes))
-    #+END_SRC
+#+BEGIN_SRC emacs-lisp
+  (defadvice load-theme (before clear-previous-themes activate)
+    "Clear existing theme settings instead of layering them"
+    (mapc #'disable-theme custom-enabled-themes))
+#+END_SRC
 ** Choose a theme
-   #+BEGIN_SRC emacs-lisp
-     (load-theme 'badwolf)
-   #+END_SRC
-** And a font
-   #+BEGIN_SRC emacs-lisp
-     (set-frame-font "Source Code Pro:pixelsize=13" nil t)
-   #+END_SRC
+#+BEGIN_SRC emacs-lisp
+  (load-theme 'mccarthy)
+  (setq evil-normal-state-cursor '(box "#FF0000"))
+#+END_SRC
+** And a font such that variable-pitch is neutralized
+#+BEGIN_SRC emacs-lisp
+  (mapc
+   (lambda (face)
+     (set-face-attribute
+      face
+      nil
+      :family "Source Code Pro"
+      :height 130
+      :width 'normal
+      :weight 'normal))
+   '(default variable-pitch))
+#+END_SRC
 ** And a minimal startup
-   #+BEGIN_SRC emacs-lisp
-     (setq inhibit-startup-message t)
-     (setq inhibit-splash-screen t)
-     (setq initial-scratch-message nil)
-   #+END_SRC
+#+BEGIN_SRC emacs-lisp
+  (setq inhibit-startup-message t)
+  (setq inhibit-splash-screen t)
+  (setq initial-scratch-message nil)
+#+END_SRC
 ** Disable the bell
-   #+BEGIN_SRC emacs-lisp
-     (setq ring-bell-function 'ignore)
-   #+END_SRC
+#+BEGIN_SRC emacs-lisp
+  (setq ring-bell-function 'ignore)
+#+END_SRC
 ** Buffer Switching
-   #+BEGIN_SRC emacs-lisp
-     (winner-mode t)
-   #+END_SRC
+#+BEGIN_SRC emacs-lisp
+  (winner-mode t)
+#+END_SRC
 
 * Evil
 ** I can't type without vim bindings anymore.
-   #+BEGIN_SRC emacs-lisp
-     (evil-mode t)
-   #+END_SRC
+#+BEGIN_SRC emacs-lisp
+  (evil-mode t)
+#+END_SRC
 ** Allow some common typos
-   #+BEGIN_SRC emacs-lisp
-     (evil-ex-define-cmd "W[rite]" 'save-buffer)
-     (evil-ex-define-cmd "V[split]" 'evil-window-vsplit)
-   #+END_SRC
+#+BEGIN_SRC emacs-lisp
+  (evil-ex-define-cmd "W[rite]" 'save-buffer)
+  (evil-ex-define-cmd "V[split]" 'evil-window-vsplit)
+#+END_SRC
 
 * Org
 ** Babel
 *** Better source code window editing
-    #+BEGIN_SRC emacs-lisp
-      (setq org-src-window-setup 'other-window)
-    #+END_SRC
+#+BEGIN_SRC emacs-lisp
+  (setq org-src-window-setup 'current-window)
+#+END_SRC
 *** Highlight and indent source code blocks
-    #+BEGIN_SRC emacs-lisp
-      (setq org-src-fontify-natively t)
-      (setq org-src-tab-acts-natively t)
-    #+END_SRC
+#+BEGIN_SRC emacs-lisp
+  (setq org-src-fontify-natively t)
+  (setq org-src-tab-acts-natively t)
+#+END_SRC
+*** Enable additional languages
+#+BEGIN_SRC emacs-lisp
+  (add-to-list 'org-babel-load-languages
+               '(ditaa . t))
+#+END_SRC
+*** Prevent confirmation
+#+BEGIN_SRC emacs-lisp
+  (setq org-confirm-babel-evaluate nil)
+#+END_SRC
 ** UI
 *** Hide markers
-    #+BEGIN_SRC emacs-lisp
-      (setq org-hide-emphasis-markers t)
-    #+END_SRC
+#+BEGIN_SRC emacs-lisp
+  (setq org-hide-emphasis-markers t)
+#+END_SRC
 *** Clean bullets
-    #+BEGIN_SRC emacs-lisp
-      (add-hook 'org-mode-hook
-                (lambda ()
-                  (setq org-bullets-bullet-list '("○"))
-                  (require 'org-bullets)
-                  (org-bullets-mode t)))
-    #+END_SRC
-*** Redisplay images automatically
-    #+BEGIN_SRC emacs-lisp
-      (add-hook
-       'org-babel-after-execute-hook
-       (lambda ()
-         (when org-inline-image-overlays
-           (org-redisplay-inline-images))))
-    #+END_SRC
+#+BEGIN_SRC emacs-lisp
+  (add-hook 'org-mode-hook
+            (lambda ()
+              (org-indent-mode t)))
+#+END_SRC
+*** Display images
+#+BEGIN_SRC emacs-lisp
+  (setq org-startup-with-inline-images t)
+  (add-hook
+   'org-babel-after-execute-hook
+   (lambda ()
+     (when org-inline-image-overlays
+       (org-redisplay-inline-images))))
+#+END_SRC
 ** Combined with evil
-   #+BEGIN_SRC emacs-lisp
-     (evil-define-key 'normal org-mode-map (kbd "TAB") 'org-cycle)
-   #+END_SRC
+#+BEGIN_SRC emacs-lisp
+  (evil-define-key 'normal org-mode-map (kbd "TAB") 'org-cycle)
+#+END_SRC
 * Editing
 ** Indentation
-   #+BEGIN_SRC emacs-lisp
-     (setq c-basic-offset 2)
-     (setq tab-width 2)
-     (setq-default indent-tabs-mode nil)
-   #+END_SRC
+#+BEGIN_SRC emacs-lisp
+  (setq c-basic-offset 2)
+  (setq tab-width 2)
+  (setq-default indent-tabs-mode nil)
+#+END_SRC
 ** Backups & autosaves
-   #+BEGIN_SRC emacs-lisp
-     (setq auto-save-default nil)
-     (setq backup-directory-alist
-           `((".*" . ,temporary-file-directory)))
-     (setq auto-save-file-name-transforms
-           `((".*" ,temporary-file-directory t)))
-   #+END_SRC
+#+BEGIN_SRC emacs-lisp
+  (setq auto-save-default nil)
+  (setq backup-directory-alist
+        `((".*" . ,temporary-file-directory)))
+  (setq auto-save-file-name-transforms
+        `((".*" ,temporary-file-directory t)))
+#+END_SRC
 ** Better braces
 *** [[https://github.com/Fuco1/smartparens][Smartparens]]
-    #+BEGIN_SRC emacs-lisp
-      (require 'smartparens-config)
-      (add-hook 'prog-mode-hook 'turn-on-smartparens-mode)
-      (define-key smartparens-mode-map (kbd "M-f") 'sp-forward-slurp-sexp)
-      (define-key smartparens-mode-map (kbd "M-b") 'sp-backward-slurp-sexp)
-      (define-key smartparens-mode-map (kbd "M-F") 'sp-forward-barf-sexp)
-      (define-key smartparens-mode-map (kbd "M-B") 'sp-backward-barf-sexp)
-      (define-key smartparens-mode-map (kbd "M-s") 'sp-splice-sexp)
-      (define-key smartparens-mode-map (kbd "C-k") 'sp-kill-sexp)
-    #+END_SRC
+#+BEGIN_SRC emacs-lisp
+  (require 'smartparens-config)
+  (add-hook 'prog-mode-hook 'turn-on-smartparens-mode)
+  (define-key smartparens-mode-map (kbd "M-f") 'sp-forward-slurp-sexp)
+  (define-key smartparens-mode-map (kbd "M-b") 'sp-backward-slurp-sexp)
+  (define-key smartparens-mode-map (kbd "M-F") 'sp-forward-barf-sexp)
+  (define-key smartparens-mode-map (kbd "M-B") 'sp-backward-barf-sexp)
+  (define-key smartparens-mode-map (kbd "M-s") 'sp-splice-sexp)
+  (define-key smartparens-mode-map (kbd "C-k") 'sp-kill-sexp)
+#+END_SRC
 *** Highlight parenthesis
-    #+BEGIN_SRC emacs-lisp
-      (show-paren-mode t)
-    #+END_SRC
+#+BEGIN_SRC emacs-lisp
+  (show-paren-mode t)
+#+END_SRC
 ** Whitespace
-   #+BEGIN_SRC emacs-lisp
-     (add-hook 'before-save-hook 'whitespace-cleanup)
-     (setq require-final-newline t)
-   #+END_SRC
+#+BEGIN_SRC emacs-lisp
+  (add-hook 'before-save-hook 'whitespace-cleanup)
+  (setq require-final-newline t)
+#+END_SRC
 
 * Menus
 ** [[https://www.emacswiki.org/emacs/InteractivelyDoThings][IDO]]
-   #+BEGIN_SRC emacs-lisp
-     (setq ido-enable-flex-matching t)
-     (setq ido-everywhere t)
-     (ido-mode t)
-   #+END_SRC
+#+BEGIN_SRC emacs-lisp
+  (setq ido-enable-flex-matching t)
+  (setq ido-everywhere t)
+  (ido-mode t)
+#+END_SRC
 ** [[https://www.emacswiki.org/emacs/Smex][Smex]]
-   #+BEGIN_SRC emacs-lisp
-     (global-set-key (kbd "M-x") 'smex)
-     (global-set-key (kbd "M-X") 'smex-major-mode-commands)
-     (global-set-key (kbd "C-c C-c M-x") 'execute-extended-command)
-   #+END_SRC
+#+BEGIN_SRC emacs-lisp
+  (global-set-key (kbd "M-x") 'smex)
+  (global-set-key (kbd "M-X") 'smex-major-mode-commands)
+  (global-set-key (kbd "C-c C-c M-x") 'execute-extended-command)
+#+END_SRC
 
 * Language/Project specific
 ** BUCK
 *** Trigger python mode
-    #+BEGIN_SRC emacs-lisp
-      (add-to-list 'auto-mode-alist '(".*/BUCK$" . python-mode))
-    #+END_SRC
+#+BEGIN_SRC emacs-lisp
+  (add-to-list 'auto-mode-alist '(".*/BUCK$" . python-mode))
+#+END_SRC
 ** Scheme
 *** Set up chicken scheme
-    #+BEGIN_SRC emacs-lisp
-      (setq scheme-program-name "/usr/local/bin/csi -:c")
-    #+END_SRC
+#+BEGIN_SRC emacs-lisp
+  (setq scheme-program-name "/usr/local/bin/csi -:c")
+#+END_SRC
 
 * Version Control
 ** Disable by default
-   #+BEGIN_SRC emacs-lisp
-     (setq vc-handled-backends ())
-   #+END_SRC
+#+BEGIN_SRC emacs-lisp
+  (setq vc-handled-backends ())
+#+END_SRC
 ** Customize Monky, for when it's loaded
 *** Use command server for speed
-    #+BEGIN_SRC emacs-lisp
-      (setq monky-process-type 'cmdserver)
-    #+END_SRC
+#+BEGIN_SRC emacs-lisp
+  (setq monky-process-type 'cmdserver)
+#+END_SRC
 *** And add support for a nicer log file
-    #+BEGIN_SRC emacs-lisp
-      (defun hg-file-history ()
-        (interactive)
-        (require 'monky)
-        (monky-run-hg-async
-         "log"
-         "--template"
-         "\n{rev}) {date|shortdate}/{author|user}\n{desc|fill68}\n↘\n"
-         buffer-file-name))
-    #+END_SRC
+#+BEGIN_SRC emacs-lisp
+  (defun hg-file-history ()
+    (interactive)
+    (require 'monky)
+    (monky-run-hg-async
+     "log"
+     "--template"
+     "\n{rev}) {date|shortdate}/{author|user}\n{desc|fill68}\n↘\n"
+     buffer-file-name))
+#+END_SRC
 * Browsing
 ** Default to w3m
-   #+BEGIN_SRC emacs-lisp
-     (setq browse-url-browser-function 'w3m-browse-url)
-   #+END_SRC
+#+BEGIN_SRC emacs-lisp
+  (setq browse-url-browser-function 'w3m-browse-url)
+#+END_SRC
 ** Enable cookies
-   #+BEGIN_SRC emacs-lisp
-     (setq w3m-use-cookies t)
-   #+END_SRC
+#+BEGIN_SRC emacs-lisp
+  (setq w3m-use-cookies t)
+#+END_SRC
