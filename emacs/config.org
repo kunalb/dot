@@ -129,6 +129,11 @@ Do this first to try to get the flicker in the gui out of the way quickly
 #+BEGIN_SRC emacs-lisp
   (evil-define-key 'normal org-mode-map (kbd "TAB") 'org-cycle)
 #+END_SRC
+** Bugfixes
+#+BEGIN_SRC emacs-lisp
+  (defun org-font-lock-ensure ()
+    (font-lock-fontify-buffer))
+#+END_SRC
 * Editing
 ** Indentation
 #+BEGIN_SRC emacs-lisp
@@ -213,6 +218,7 @@ Do this first to try to get the flicker in the gui out of the way quickly
      "\n{rev}) {date|shortdate}/{author|user}\n{desc|fill68}\n↘\n"
      buffer-file-name))
 #+END_SRC
+
 * Browsing
 ** Default to w3m
 #+BEGIN_SRC emacs-lisp
@@ -222,3 +228,31 @@ Do this first to try to get the flicker in the gui out of the way quickly
 #+BEGIN_SRC emacs-lisp
   (setq w3m-use-cookies t)
 #+END_SRC
+
+* Styling for export
+** Explicitly require to prevent css errors
+But I'm not sure why this is needed.
+#+BEGIN_SRC emacs-lisp
+  (require 'ob-css)
+#+END_SRC
+
+** The actual stylesheet
+Remember not to use "
+#+NAME: custom-style
+#+BEGIN_SRC css
+  <style type='text/css'>
+  body {
+      width: 800px;
+      margin: 0 auto;
+  }
+  </style>
+#+END_SRC
+
+** Add to header
+#+BEGIN_SRC emacs-lisp :noweb yes
+  (setq org-html-head "
+   <<custom-style>>
+   ")
+#+END_SRC
+
+** TODO Figure out how to auto-quote noweb'd references.
