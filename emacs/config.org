@@ -41,10 +41,11 @@ Do this first to try to get the flicker in the gui out of the way quickly
     "Clear existing theme settings instead of layering them"
     (mapc #'disable-theme custom-enabled-themes))
 #+END_SRC
-** Choose a theme
+** Choose a nice cursor
 #+BEGIN_SRC emacs-lisp
-  (load-theme 'tao-yang)
-  (setq evil-normal-state-cursor '(box "#FF0000"))
+  (defadvice load-theme (after set-cursor-color activate)
+    "Switch to a bright red cursor, just because"
+    (setq evil-normal-state-cursor '(box "#FF0000")))
 #+END_SRC
 ** And a font such that variable-pitch is neutralized
 #+BEGIN_SRC emacs-lisp
