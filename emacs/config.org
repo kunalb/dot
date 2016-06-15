@@ -43,7 +43,7 @@ Do this first to try to get the flicker in the gui out of the way quickly
 #+END_SRC
 ** Choose a theme
 #+BEGIN_SRC emacs-lisp
-  (load-theme 'mccarthy)
+  (load-theme 'tao-yang)
   (setq evil-normal-state-cursor '(box "#FF0000"))
 #+END_SRC
 ** And a font such that variable-pitch is neutralized
@@ -54,7 +54,7 @@ Do this first to try to get the flicker in the gui out of the way quickly
       face
       nil
       :family "Source Code Pro"
-      :height 130
+      :height 120
       :width 'normal
       :weight 'normal))
    '(default variable-pitch))
@@ -237,7 +237,7 @@ But I'm not sure why this is needed.
 #+END_SRC
 
 ** The actual stylesheet
-Remember not to use "
+Can't use '"' till I can figure out better quote escaping.
 #+NAME: custom-style
 #+BEGIN_SRC css
   <style type='text/css'>
@@ -248,8 +248,7 @@ Remember not to use "
   </style>
 #+END_SRC
 
-** Add to header
-#+BEGIN_SRC emacs-lisp :noweb yes
+#+BEGIN_SRC emacs-lisp :noweb yes :exports none
   (setq org-html-head "
    <<custom-style>>
    ")

@@ -1,0 +1,39 @@
+# Emacsen forever
+export EDITOR=emacs
+
+# But only with Vim bindings
+bindkey -v
+
+# But I still want incremental backwards search
+bindkey "^R" history-incremental-pattern-search-backward
+
+# I really, really dislike interrupts
+unsetopt beep
+unsetopt hist_beep
+unsetopt list_beep
+
+# History
+export HISTFILE=/Users/kunalb/.zsh_history
+export HISTSIZE=10000
+export SAVEHIST=10000
+setopt inc_append_history
+
+# Adjust path
+export PATH=/Users/kunalb/bin:$PATH
+
+# Enable colours
+autoload -U colors && colors
+
+# Nicer prompts
+PROMPT="%{$fg[red]%}%~%{$reset_color%} "
+
+# Load aliases
+. ~/.aliases
+
+# Load laptop specific settings
+test -f ~/.localzshrc && . ~/.localzshrc
+
+# Helper functions
+scan() {
+    grep -i $1 -r .
+}
