@@ -220,6 +220,13 @@ Do this first to try to get the flicker in the gui out of the way quickly
      buffer-file-name))
 #+END_SRC
 
+* Utilities
+** Current file name
+#+BEGIN_SRC emacs-lisp
+  (defun path ()
+    (interactive)
+    (message (buffer-file-name)))
+#+END_SRC
 * Browsing
 ** Default to w3m
 #+BEGIN_SRC emacs-lisp
