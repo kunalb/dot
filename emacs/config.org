@@ -135,6 +135,11 @@ Do this first to try to get the flicker in the gui out of the way quickly
   (defun org-font-lock-ensure ()
     (font-lock-fontify-buffer))
 #+END_SRC
+* Emamux
+** Shortcut for run-last-command
+#+BEGIN_SRC emacs-lisp
+  (define-key evil-normal-state-map (kbd "C-c r") 'emamux:run-last-command)
+#+END_SRC
 * Editing
 ** Indentation
 #+BEGIN_SRC emacs-lisp
