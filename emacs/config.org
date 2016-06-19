@@ -136,9 +136,15 @@ Do this first to try to get the flicker in the gui out of the way quickly
     (font-lock-fontify-buffer))
 #+END_SRC
 * Emamux
-** Shortcut for run-last-command
+** Customization
+#+BEGIN_SRC emacs-lisp
+  (setq emamux:use-nearest-pane t)
+#+END_SRC
+** Some useful shortcuts
 #+BEGIN_SRC emacs-lisp
   (define-key evil-normal-state-map (kbd "C-c r") 'emamux:run-last-command)
+  (define-key evil-normal-state-map (kbd "C-c x") 'emamux:run-command)
+  (define-key evil-normal-state-map (kbd "C-c i") 'emamux:inspect-runner)
 #+END_SRC
 * Editing
 ** Indentation
@@ -177,6 +183,15 @@ Do this first to try to get the flicker in the gui out of the way quickly
   (setq require-final-newline t)
 #+END_SRC
 
+** Reload files
+#+BEGIN_SRC emacs-lisp
+  (defun revert-all-buffers ()
+    (interactive)
+    (dolist (buf (buffer-list))
+      (with-current-buffer buf
+        (when (buffer-file-name)
+          (revert-buffer t t t)))))
+#+END_SRC
 * Menus
 ** [[https://www.emacswiki.org/emacs/InteractivelyDoThings][IDO]]
 #+BEGIN_SRC emacs-lisp
