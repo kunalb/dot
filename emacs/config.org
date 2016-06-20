@@ -74,6 +74,11 @@ Do this first to try to get the flicker in the gui out of the way quickly
 #+BEGIN_SRC emacs-lisp
   (winner-mode t)
 #+END_SRC
+** Line numbers
+#+BEGIN_SRC emacs-lisp
+  (setq linum-format " %d ")
+  (global-linum-mode 1)
+#+END_SRC
 
 * Evil
 ** I can't type without vim bindings anymore.
@@ -134,6 +139,12 @@ Do this first to try to get the flicker in the gui out of the way quickly
 #+BEGIN_SRC emacs-lisp
   (defun org-font-lock-ensure ()
     (font-lock-fontify-buffer))
+#+END_SRC
+** Disable line numbers
+#+BEGIN_SRC emacs-lisp
+  (add-hook 'org-mode-hook
+            (lambda ()
+              (linum-mode 0)))
 #+END_SRC
 * Emamux
 ** Customization
