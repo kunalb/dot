@@ -26,6 +26,7 @@ autoload -U colors && colors
 
 # Nicer prompts
 PROMPT="%{$fg[red]%}%~%{$reset_color%} "
+export RPROMPT=" %F{243}%*%f"
 
 # Load aliases
 . ~/.aliases
