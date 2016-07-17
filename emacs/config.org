@@ -281,7 +281,7 @@ Do this first to try to get the flicker in the gui out of the way quickly
 #+END_SRC
 
 * Dired
-** Hide permissions and owners to make file lists less noisy [[][(from Xah Lee's blog)]]
+** Hide permissions and owners to make file lists less noisy [[http://ergoemacs.org/emacs/file_management.html][(from Xah Lee's blog)]]
 #+BEGIN_SRC emacs-lisp
   (add-hook 'dired-mode-hook
             (lambda ()
