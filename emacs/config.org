@@ -151,21 +151,16 @@ Do this first to try to get the flicker in the gui out of the way quickly
 
   (defun open-sparse-view ()
     "Shows a sparse tree on clicking a tag instead of org-tags-view"
-    (let ((context (org-element-lineage
-                    (org-element-context)
-                    '(headline inlinetask)
-                    t)))
-      (when (and context
-                 ;; From org-open-at-point, sanity checking that we're on a headline
-                 ;; and have tags
-                 (progn (save-excursion (beginning-of-line)
-                                        (looking-at org-complex-heading-regexp))
-                        (message (number-to-string (point)))
-                        (message (number-to-string (match-beginning 5)))
-                        (and (match-beginning 5)
-                             (> (point) (match-beginning 5)))))
-        (org-match-sparse-tree nil (concat "+" (tag-at-point-in-heading)))
-        't)))
+    ;; From org-open-at-point, sanity checking that we're on a headline with tags
+    (when (and (org-element-lineage (org-element-context)
+                                    '(headline inlinetask)
+                                    t)
+               (progn (save-excursion (beginning-of-line)
+                                      (looking-at org-complex-heading-regexp))
+                      (and (match-beginning 5)
+                           (> (point) (match-beginning 5)))))
+      (org-match-sparse-tree nil (concat "+" (tag-at-point-in-heading)))
+      't))
 
   (add-hook 'org-open-at-point-functions
             'open-sparse-view)
