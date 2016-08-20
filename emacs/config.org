@@ -41,12 +41,6 @@ Do this first to try to get the flicker in the gui out of the way quickly
     "Clear existing theme settings instead of layering them"
     (mapc #'disable-theme custom-enabled-themes))
 #+END_SRC
-** Choose a nice cursor
-#+BEGIN_SRC emacs-lisp
-  (defadvice load-theme (after set-cursor-color activate)
-    "Switch to a bright red cursor, just because"
-    (setq evil-normal-state-cursor '(box "#FF0000")))
-#+END_SRC
 ** And a font such that variable-pitch is neutralized
 #+BEGIN_SRC emacs-lisp
   (mapc
@@ -73,11 +67,6 @@ Do this first to try to get the flicker in the gui out of the way quickly
 ** Buffer Switching
 #+BEGIN_SRC emacs-lisp
   (winner-mode t)
-#+END_SRC
-** Line numbers
-#+BEGIN_SRC emacs-lisp
-  (setq linum-format " %d ")
-  (global-linum-mode 1)
 #+END_SRC
 
 * Evil
@@ -131,6 +120,13 @@ Do this first to try to get the flicker in the gui out of the way quickly
      (when org-inline-image-overlays
        (org-redisplay-inline-images))))
 #+END_SRC
+*** Enable auto-fill mode
+#+BEGIN_SRC emacs-lisp
+  (add-hook
+   'org-mode-hook
+   (lambda ()
+     (auto-fill-mode)))
+#+END_SRC
 ** Combined with evil
 #+BEGIN_SRC emacs-lisp
   (evil-define-key 'normal org-mode-map (kbd "TAB") 'org-cycle)
@@ -140,12 +136,41 @@ Do this first to try to get the flicker in the gui out of the way quickly
   (defun org-font-lock-ensure ()
     (font-lock-fontify-buffer))
 #+END_SRC
-** Disable line numbers
+** Tag clicks show sparse tree instead of agenda view
 #+BEGIN_SRC emacs-lisp
-  (add-hook 'org-mode-hook
-            (lambda ()
-              (linum-mode 0)))
+  (defun tag-at-point-in-heading ()
+    "Returns the tag at the current point in the string"
+    (let ((str (buffer-string))
+          (begin (point))
+          (end (point)))
+      (while (not (equal (aref str begin) ?:))
+        (setq begin (- begin 1)))
+      (while (not (equal (aref str end) ?:))
+        (setq end (+ end 1)))
+      (substring str (+ 1 begin) end)))
+
+  (defun open-sparse-view ()
+    "Shows a sparse tree on clicking a tag instead of org-tags-view"
+    (let ((context (org-element-lineage
+                    (org-element-context)
+                    '(headline inlinetask)
+                    t)))
+      (when (and context
+                 ;; From org-open-at-point, sanity checking that we're on a headline
+                 ;; and have tags
+                 (progn (save-excursion (beginning-of-line)
+                                        (looking-at org-complex-heading-regexp))
+                        (message (number-to-string (point)))
+                        (message (number-to-string (match-beginning 5)))
+                        (and (match-beginning 5)
+                             (> (point) (match-beginning 5)))))
+        (org-match-sparse-tree nil (concat "+" (tag-at-point-in-heading)))
+        't)))
+
+  (add-hook 'org-open-at-point-functions
+            'open-sparse-view)
 #+END_SRC
+
 * Emamux
 ** Customization
 #+BEGIN_SRC emacs-lisp
@@ -157,6 +182,7 @@ Do this first to try to get the flicker in the gui out of the way quickly
   (define-key evil-normal-state-map (kbd "C-c x") 'emamux:run-command)
   (define-key evil-normal-state-map (kbd "C-c i") 'emamux:inspect-runner)
 #+END_SRC
+
 * Editing
 ** Indentation
 #+BEGIN_SRC emacs-lisp
@@ -258,39 +284,25 @@ Do this first to try to get the flicker in the gui out of the way quickly
     (interactive)
     (message (buffer-file-name)))
 #+END_SRC
-* Browsing
-** Default to w3m
+
+* Dired
+** Hide permissions and owners to make file lists less noisy [[][(from Xah Lee's blog)]]
 #+BEGIN_SRC emacs-lisp
-  (setq browse-url-browser-function 'w3m-browse-url)
+  (add-hook 'dired-mode-hook
+            (lambda ()
+              (dired-hide-details-mode 1)))
+#+END_SRC
+** Disable ls by default in dired
+#+BEGIN_SRC emacs-lisp
+   (setq dired-use-ls-dired nil)
+#+END_SRC
+
+* Browsing
+** Default to mac
+#+BEGIN_SRC emacs-lisp
+  (setq browse-url-browser-function 'browse-url-default-macosx-browser)
 #+END_SRC
 ** Enable cookies
 #+BEGIN_SRC emacs-lisp
   (setq w3m-use-cookies t)
 #+END_SRC
-
-* Styling for export
-** Explicitly require to prevent css errors
-But I'm not sure why this is needed.
-#+BEGIN_SRC emacs-lisp
-  (require 'ob-css)
-#+END_SRC
-
-** The actual stylesheet
-Can't use '"' till I can figure out better quote escaping.
-#+NAME: custom-style
-#+BEGIN_SRC css
-  <style type='text/css'>
-  body {
-      width: 800px;
-      margin: 0 auto;
-  }
-  </style>
-#+END_SRC
-
-#+BEGIN_SRC emacs-lisp :noweb yes :exports none
-  (setq org-html-head "
-   <<custom-style>>
-   ")
-#+END_SRC
-
-** TODO Figure out how to auto-quote noweb'd references.

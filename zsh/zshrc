@@ -28,7 +28,7 @@ autoload -U colors && colors
 PROMPT="%{$fg[red]%}%~%{$reset_color%} "
 
 # Load aliases
-. ~/.aliases
+test -f ~/.aliases && . ~/.aliases
 
 # Load laptop specific settings
 test -f ~/.localzshrc && . ~/.localzshrc
