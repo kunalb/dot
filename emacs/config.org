@@ -68,6 +68,16 @@ Do this first to try to get the flicker in the gui out of the way quickly
 #+BEGIN_SRC emacs-lisp
   (winner-mode t)
 #+END_SRC
+** I like large mode-lines, and I cannot lie (stolen from Jazz, etc.)
+#+BEGIN_SRC emacs-lisp
+  (defun apply-box-attributes (face)
+    (set-face-attribute face nil
+     :box `(:line-width 5
+            :color ,(face-attribute face :background))))
+  (mapc #'apply-box-attributes
+        '(mode-line mode-line-inactive mode-line-highlight
+          header-line))
+#+END_SRC
 
 * Evil
 ** I can't type without vim bindings anymore.
@@ -280,6 +290,11 @@ Do this first to try to get the flicker in the gui out of the way quickly
     (message (buffer-file-name)))
 #+END_SRC
 
+* GDB
+** Show all the windows on start
+#+BEGIN_SRC emacs-lisp
+  (setq gdb-many-windows 't)
+#+END_SRC
 * Dired
 ** Hide permissions and owners to make file lists less noisy [[http://ergoemacs.org/emacs/file_management.html][(from Xah Lee's blog)]]
 #+BEGIN_SRC emacs-lisp
