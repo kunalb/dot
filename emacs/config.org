@@ -110,6 +110,11 @@ Do this first to try to get the flicker in the gui out of the way quickly
 #+BEGIN_SRC emacs-lisp
   (setq org-confirm-babel-evaluate nil)
 #+END_SRC
+*** Use Web mode for HTML
+#+BEGIN_SRC emacs-lisp
+  (add-to-list 'org-src-lang-modes
+               '("html" . web))
+#+END_SRC
 ** UI
 *** Hide markers
 #+BEGIN_SRC emacs-lisp
@@ -175,7 +180,16 @@ Do this first to try to get the flicker in the gui out of the way quickly
   (add-hook 'org-open-at-point-functions
             'open-sparse-view)
 #+END_SRC
-
+** Add support for not exporting headlines
+#+BEGIN_SRC emacs-lisp
+  (require 'ox-extra) ; from org-plus-contrib
+  (ox-extras-activate '(ignore-headlines))
+#+END_SRC
+** Add support for publishing 'web' src as is
+#+BEGIN_SRC emacs-lisp
+  (defun org-babel-execute:web (body params)
+    body)
+#+END_SRC
 * Emamux
 ** Customization
 #+BEGIN_SRC emacs-lisp
@@ -259,7 +273,17 @@ Do this first to try to get the flicker in the gui out of the way quickly
 #+BEGIN_SRC emacs-lisp
   (setq scheme-program-name "/usr/local/bin/csi -:c")
 #+END_SRC
+** Web Mode
+#+BEGIN_SRC emacs-lisp
+  (setq web-mode-markup-indent-offset 2)
+  (setq web-mode-css-indent-offset 2)
+  (setq web-mode-code-indent-offset 2)
 
+  (setq web-mode-style-padding 2)
+  (setq web-mode-script-padding 2)
+
+  (setq web-mode-auto-quote-style 2) ; use single quotes
+#+END_SRC
 * Version Control
 ** Disable by default
 #+BEGIN_SRC emacs-lisp
