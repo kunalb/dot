@@ -6,7 +6,6 @@
   (require 'package)
   (setq package-archives '(("melpa" . "http://melpa.milkbox.net/packages/")
                            ("elpa" . "http://elpa.gnu.org/packages/")
-                           ("marmalade" . "http://marmalade-repo.org/packages/")
                            ("org" . "http://orgmode.org/elpa/")))
   (package-initialize)
 #+END_SRC
@@ -43,16 +42,16 @@ Do this first to try to get the flicker in the gui out of the way quickly
 #+END_SRC
 ** And a font such that variable-pitch is neutralized
 #+BEGIN_SRC emacs-lisp
-  (mapc
-   (lambda (face)
-     (set-face-attribute
-      face
-      nil
-      :family "Source Code Pro"
-      :height 120
-      :width 'normal
-      :weight 'normal))
-   '(default variable-pitch))
+(mapc
+ (lambda (face)
+   (set-face-attribute
+    face
+    nil
+    :family "Anonymous Pro"
+    :height 140
+    :width 'normal
+    :weight 'normal))
+ '(default variable-pitch))
 #+END_SRC
 ** And a minimal startup
 #+BEGIN_SRC emacs-lisp
@@ -68,7 +67,7 @@ Do this first to try to get the flicker in the gui out of the way quickly
 #+BEGIN_SRC emacs-lisp
   (winner-mode t)
 #+END_SRC
-** I like large mode-lines, and I cannot lie (stolen from Jazz, etc.)
+** Large mode-lines (stolen from Jazz, etc.)
 #+BEGIN_SRC emacs-lisp
   (defun apply-box-attributes (face)
     (set-face-attribute face nil
@@ -94,17 +93,22 @@ Do this first to try to get the flicker in the gui out of the way quickly
 ** Babel
 *** Better source code window editing
 #+BEGIN_SRC emacs-lisp
-  (setq org-src-window-setup 'current-window)
+  (setq org-src-window-setup 'other-window)
 #+END_SRC
 *** Highlight and indent source code blocks
 #+BEGIN_SRC emacs-lisp
-  (setq org-src-fontify-natively t)
-  (setq org-src-tab-acts-natively t)
+(setq org-src-fontify-natively t)
+(setq org-src-tab-acts-natively t)
+(setq org-edit-src-content-indentation 0)
 #+END_SRC
+
 *** Enable additional languages
 #+BEGIN_SRC emacs-lisp
-  (add-to-list 'org-babel-load-languages
-               '(ditaa . t))
+(add-to-list 'org-babel-load-languages '(dot . t))
+(add-to-list 'org-babel-load-languages '(ditaa . t))
+(add-to-list 'org-babel-load-languages '(ipython . t))
+(add-to-list 'org-babel-load-languages '(python . t))
+; (org-babel-do-load-languages 'org-babel-load-language '())
 #+END_SRC
 *** Prevent confirmation
 #+BEGIN_SRC emacs-lisp
@@ -150,6 +154,11 @@ Do this first to try to get the flicker in the gui out of the way quickly
 #+BEGIN_SRC emacs-lisp
   (defun org-font-lock-ensure ()
     (font-lock-fontify-buffer))
+#+END_SRC
+** Expert tagging
+(Doesn't show the tag window till an extra C-c.)
+#+BEGIN_SRC emacs-lisp
+(setq org-fast-tag-selection-single-key 'expert)
 #+END_SRC
 ** Tag clicks show sparse tree instead of agenda view
 #+BEGIN_SRC emacs-lisp
@@ -284,6 +293,17 @@ Do this first to try to get the flicker in the gui out of the way quickly
 
   (setq web-mode-auto-quote-style 2) ; use single quotes
 #+END_SRC
+
+** Rust
+#+BEGIN_SRC emacs-lisp
+(add-hook 'rust-mode-hook #'racer-mode)
+(add-hook 'rust-mode-hook
+          (lambda ()
+           (define-key rust-mode-map (kbd "TAB") #'company-indent-or-complete-common)))
+(add-hook 'racer-mode-hook #'eldoc-mode)
+(add-hook 'flycheck-mode-hook #'flycheck-rust-setup)
+#+END_SRC
+
 * Version Control
 ** Disable by default
 #+BEGIN_SRC emacs-lisp
@@ -319,6 +339,11 @@ Do this first to try to get the flicker in the gui out of the way quickly
 #+BEGIN_SRC emacs-lisp
   (setq gdb-many-windows 't)
 #+END_SRC
+* Neotree
+** Simple theme
+#+BEGIN_SRC emacs-lisp
+(setq neo-theme 'ascii)
+#+END_SRC
 * Dired
 ** Hide permissions and owners to make file lists less noisy [[http://ergoemacs.org/emacs/file_management.html][(from Xah Lee's blog)]]
 #+BEGIN_SRC emacs-lisp
@@ -339,4 +364,20 @@ Do this first to try to get the flicker in the gui out of the way quickly
 ** Enable cookies
 #+BEGIN_SRC emacs-lisp
   (setq w3m-use-cookies t)
+#+END_SRC
+
+* Auto completion
+#+BEGIN_SRC emacs-lisp
+(add-hook 'prog-mode-hook 'company-mode)
+(setq company-tooltip-align-annotations t)
+#+END_SRC
+
+* Flycheck
+#+BEGIN_SRC emacs-lisp
+(global-flycheck-mode)
+#+END_SRC
+
+* Linum mode
+#+BEGIN_SRC emacs-lisp
+(setq linum-format "%d ")
 #+END_SRC

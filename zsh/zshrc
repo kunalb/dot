@@ -1,5 +1,7 @@
-# Emacsen forever
-export EDITOR=emacs
+# Editors
+alias e="emacs -nw"
+
+export EDITOR="/usr/local/bin/emacs -nw"
 
 # But only with Vim bindings
 bindkey -v
@@ -13,7 +15,7 @@ unsetopt hist_beep
 unsetopt list_beep
 
 # History
-export HISTFILE=/Users/kunalb/.zsh_history
+export HISTFILE=$HOME/.zsh_history
 export HISTSIZE=10000
 export SAVEHIST=10000
 setopt EXTENDED_HISTORY
@@ -21,6 +23,7 @@ setopt INC_APPEND_HISTORY_TIME
 
 # Adjust path
 export PATH=/Users/kunalb/bin:$PATH
+export PATH=/Users/kunalb/.cargo/bin:$PATH
 
 # Enable colours
 autoload -U colors && colors
@@ -38,3 +41,9 @@ test -f ~/.localzshrc && . ~/.localzshrc
 scan() {
     grep -i $1 -r .
 }
+
+# Completions
+fpath+=~/.zfunc
+
+autoload -Uz compinit
+compinit -i
