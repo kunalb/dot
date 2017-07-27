@@ -21,15 +21,20 @@ export SAVEHIST=10000
 setopt EXTENDED_HISTORY
 setopt INC_APPEND_HISTORY_TIME
 
+# Set up java
+export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk1.8.0_131.jdk/Contents/Home
+
 # Adjust path
 export PATH=/Users/kunalb/bin:$PATH
 export PATH=/Users/kunalb/.cargo/bin:$PATH
+export PATH=/Library/Java/JavaVirtualMachines/jdk1.8.0_131.jdk/Contents/Home/bin:$PATH
 
 # Enable colours
 autoload -U colors && colors
 
 # Nicer prompts
-PROMPT="%{$fg[red]%}%~%{$reset_color%} "
+PROMPT="%K{160}%F{015}┌── %k%K{234} %? %k%K{236} %D{%H.%M.%S} %k%K{239} %~ %f%k
+%K{160}└ %k "
 
 # Load aliases
 test -f ~/.aliases && . ~/.aliases

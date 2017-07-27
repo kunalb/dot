@@ -47,8 +47,8 @@ Do this first to try to get the flicker in the gui out of the way quickly
    (set-face-attribute
     face
     nil
-    :family "Anonymous Pro"
-    :height 140
+    :family "DejaVu Sans Mono"
+    :height 120
     :width 'normal
     :weight 'normal))
  '(default variable-pitch))
@@ -67,15 +67,36 @@ Do this first to try to get the flicker in the gui out of the way quickly
 #+BEGIN_SRC emacs-lisp
   (winner-mode t)
 #+END_SRC
-** Large mode-lines (stolen from Jazz, etc.)
+** Linum mode
+*** Activate linum mode with spaces
+Mechanism to set whitespace from the readme at [[https://github.com/bruce/emacs-spacegray-theme][Spacegray theme]].
 #+BEGIN_SRC emacs-lisp
-  (defun apply-box-attributes (face)
-    (set-face-attribute face nil
-     :box `(:line-width 5
-            :color ,(face-attribute face :background))))
-  (mapc #'apply-box-attributes
-        '(mode-line mode-line-inactive mode-line-highlight
-          header-line))
+(global-linum-mode 1)
+(defadvice linum-update-window (around linum-dynamic activate)
+  (let* ((w (length (number-to-string
+                     (count-lines (point-min) (point-max)))))
+         (linum-format (concat " %" (number-to-string w) "d ")))
+    ad-do-it))
+#+END_SRC
+
+*** Highlight the current line subtly
+#+BEGIN_SRC emacs-lisp
+(hlinum-activate)
+(set-face-attribute
+ 'linum-highlight-face
+ nil
+ :foreground "#FFFFFF"
+ :background (face-attribute 'linum :background))
+#+END_SRC
+
+** Fill column
+#+BEGIN_SRC emacs-lisp
+(setq fci-rule-column 80)
+(setq fci-rule-color (face-attribute 'linum :foreground))
+#+END_SRC
+** Scrolling more naturally
+#+BEGIN_SRC emacs-lisp
+(setq scroll-conservatively 1000)
 #+END_SRC
 
 * Evil
@@ -102,13 +123,15 @@ Do this first to try to get the flicker in the gui out of the way quickly
 (setq org-edit-src-content-indentation 0)
 #+END_SRC
 
-*** Enable additional languages
+*** Enable languages
 #+BEGIN_SRC emacs-lisp
+(add-to-list 'org-babel-load-languages '(emacs-lisp . t))
 (add-to-list 'org-babel-load-languages '(dot . t))
 (add-to-list 'org-babel-load-languages '(ditaa . t))
 (add-to-list 'org-babel-load-languages '(ipython . t))
 (add-to-list 'org-babel-load-languages '(python . t))
-; (org-babel-do-load-languages 'org-babel-load-language '())
+(add-to-list 'org-babel-load-languages '(C . t))
+; (org-babel-do-load-languages 'org-babel-load-languages '())
 #+END_SRC
 *** Prevent confirmation
 #+BEGIN_SRC emacs-lisp
@@ -372,12 +395,10 @@ Do this first to try to get the flicker in the gui out of the way quickly
 (setq company-tooltip-align-annotations t)
 #+END_SRC
 
-* Flycheck
-#+BEGIN_SRC emacs-lisp
-(global-flycheck-mode)
-#+END_SRC
-
-* Linum mode
-#+BEGIN_SRC emacs-lisp
-(setq linum-format "%d ")
+* Buffer Management
+From [[http://stackoverflow.com/questions/3417438/closing-all-other-buffers-in-emacs][StackOverflow]]
+#+BEGIN_SRC
+(defun close-all-buffers ()
+  (interactive)
+  (mapc 'kill-buffer (buffer-list)))
 #+END_SRC
