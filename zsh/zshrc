@@ -16,8 +16,8 @@ unsetopt list_beep
 
 # History
 export HISTFILE=$HOME/.zsh_history
-export HISTSIZE=10000
-export SAVEHIST=10000
+export HISTSIZE=100000
+export SAVEHIST=100000
 setopt EXTENDED_HISTORY
 setopt INC_APPEND_HISTORY_TIME
 
@@ -33,11 +33,15 @@ export PATH=/Library/Java/JavaVirtualMachines/jdk1.8.0_131.jdk/Contents/Home/bin
 autoload -U colors && colors
 
 # Nicer prompts
-PROMPT="%K{160}%F{015}┌── %k%K{234} %? %k%K{236} %D{%H.%M.%S} %k%K{239} %~ %f%k
-%K{160}└ %k "
+PROMPT="%(0?..%F{234}└─ %f%F{160}%? %f
+)%F{234}┌─ %f%F{015}%D{%H.%M.%S}%f%F{234} ─ %f%F{015}%~ %f%F{234}─%f
+%F{234}┕ %f "
 
 # Load aliases
 test -f ~/.aliases && . ~/.aliases
+
+# Nicer tab completion
+zstyle ':completion:*' menu select
 
 # Load laptop specific settings
 test -f ~/.localzshrc && . ~/.localzshrc

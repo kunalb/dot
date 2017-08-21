@@ -99,6 +99,10 @@ Mechanism to set whitespace from the readme at [[https://github.com/bruce/emacs-
 (setq scroll-conservatively 1000)
 #+END_SRC
 
+** Compilation window output
+#+BEGIN_SRC emacs-lisp
+(setq compilation-window-height 15)
+#+END_SRC
 * Evil
 ** I can't type without vim bindings anymore.
 #+BEGIN_SRC emacs-lisp
@@ -233,7 +237,16 @@ Mechanism to set whitespace from the readme at [[https://github.com/bruce/emacs-
   (define-key evil-normal-state-map (kbd "C-c x") 'emamux:run-command)
   (define-key evil-normal-state-map (kbd "C-c i") 'emamux:inspect-runner)
 #+END_SRC
+* Compiling
+** Keyboard shortcut
+#+BEGIN_SRC emacs-lisp
+(define-key evil-normal-state-map (kbd "C-c c") 'recompile)
+#+END_SRC
+* Man Pages
+#+BEGIN_SRC emacs-lisp
+(setq Man-notify-method 'pushy)
 
+#+END_SRC
 * Editing
 ** Indentation
 #+BEGIN_SRC emacs-lisp
