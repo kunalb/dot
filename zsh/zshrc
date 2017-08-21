@@ -33,9 +33,9 @@ export PATH=/Library/Java/JavaVirtualMachines/jdk1.8.0_131.jdk/Contents/Home/bin
 autoload -U colors && colors
 
 # Nicer prompts
-PROMPT="%(0?..%F{234}└─ %f%F{160}%? %f
-)%F{234}┌─ %f%F{015}%D{%H.%M.%S}%f%F{234} ─ %f%F{015}%~ %f%F{234}─%f
-%F{234}┕ %f "
+PROMPT="%(0?..%F{088}└─ %f%F{160}%? %f
+)%F{088}┌─ %f%F{249}%D{%H.%M.%S}%f%F{088} ─ %f%F{249}%~ %f%F{088}─%f
+%F{088}┕ %f "
 
 # Load aliases
 test -f ~/.aliases && . ~/.aliases
