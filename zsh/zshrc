@@ -1,7 +1,8 @@
 # Editors
-alias e="emacs -nw"
+export EDITOR="e"
 
-export EDITOR="/usr/local/bin/emacs -nw"
+# Extended globbing is really fun
+setopt extendedglob
 
 # But only with Vim bindings
 bindkey -v

@@ -47,8 +47,8 @@ Do this first to try to get the flicker in the gui out of the way quickly
    (set-face-attribute
     face
     nil
-    :family "DejaVu Sans Mono"
-    :height 120
+    :family "Fira Code"
+    :height 130
     :width 'normal
     :weight 'normal))
  '(default variable-pitch))
@@ -85,7 +85,7 @@ Mechanism to set whitespace from the readme at [[https://github.com/bruce/emacs-
 (set-face-attribute
  'linum-highlight-face
  nil
- :foreground "#FFFFFF"
+ :foreground "#FF0000"
  :background (face-attribute 'linum :background))
 #+END_SRC
 
@@ -102,6 +102,10 @@ Mechanism to set whitespace from the readme at [[https://github.com/bruce/emacs-
 ** Compilation window output
 #+BEGIN_SRC emacs-lisp
 (setq compilation-window-height 15)
+#+END_SRC
+** Truncate lines by default
+#+BEGIN_SRC emacs-lisp
+(toggle-truncate-lines 1)
 #+END_SRC
 * Evil
 ** I can't type without vim bindings anymore.
@@ -284,15 +288,6 @@ Mechanism to set whitespace from the readme at [[https://github.com/bruce/emacs-
   (setq require-final-newline t)
 #+END_SRC
 
-** Reload files
-#+BEGIN_SRC emacs-lisp
-  (defun revert-all-buffers ()
-    (interactive)
-    (dolist (buf (buffer-list))
-      (with-current-buffer buf
-        (when (buffer-file-name)
-          (revert-buffer t t t)))))
-#+END_SRC
 * Menus
 ** [[https://www.emacswiki.org/emacs/InteractivelyDoThings][IDO]]
 #+BEGIN_SRC emacs-lisp
@@ -410,8 +405,17 @@ Mechanism to set whitespace from the readme at [[https://github.com/bruce/emacs-
 
 * Buffer Management
 From [[http://stackoverflow.com/questions/3417438/closing-all-other-buffers-in-emacs][StackOverflow]]
-#+BEGIN_SRC
+#+BEGIN_SRC emacs-lisp
 (defun close-all-buffers ()
   (interactive)
   (mapc 'kill-buffer (buffer-list)))
+#+END_SRC
+** Reload files
+#+BEGIN_SRC emacs-lisp
+  (defun revert-all-buffers ()
+    (interactive)
+    (dolist (buf (buffer-list))
+      (with-current-buffer buf
+        (when (buffer-file-name)
+          (revert-buffer t t t)))))
 #+END_SRC
