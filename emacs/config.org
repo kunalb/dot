@@ -71,7 +71,8 @@ Do this first to try to get the flicker in the gui out of the way quickly
 *** Activate linum mode with spaces
 Mechanism to set whitespace from the readme at [[https://github.com/bruce/emacs-spacegray-theme][Spacegray theme]].
 #+BEGIN_SRC emacs-lisp
-(global-linum-mode 1)
+(add-hook 'prog-mode-hook
+          'linum-mode)
 (defadvice linum-update-window (around linum-dynamic activate)
   (let* ((w (length (number-to-string
                      (count-lines (point-min) (point-max)))))
