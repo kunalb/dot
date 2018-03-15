@@ -26,9 +26,8 @@ setopt INC_APPEND_HISTORY_TIME
 export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk1.8.0_131.jdk/Contents/Home
 
 # Adjust path
-export PATH=/Users/kunalb/bin:$PATH
-export PATH=/Users/kunalb/.cargo/bin:$PATH
-export PATH=/Library/Java/JavaVirtualMachines/jdk1.8.0_131.jdk/Contents/Home/bin:$PATH
+export PATH=/Users/knl/bin:$PATH
+export PATH=/Users/knl/.cargo/bin:$PATH
 
 # Enable colours
 autoload -U colors && colors

@@ -131,7 +131,10 @@ Mechanism to set whitespace from the readme at [[https://github.com/bruce/emacs-
 (setq org-src-tab-acts-natively t)
 (setq org-edit-src-content-indentation 0)
 #+END_SRC
-
+*** Highlight quotes
+#+BEGIN_SRC emacs-lisp
+(setq org-fontify-quote-and-verse-blocks t)
+#+END_SRC
 *** Enable languages
 #+BEGIN_SRC emacs-lisp
 (add-to-list 'org-babel-load-languages '(emacs-lisp . t))
@@ -140,7 +143,7 @@ Mechanism to set whitespace from the readme at [[https://github.com/bruce/emacs-
 (add-to-list 'org-babel-load-languages '(ipython . t))
 (add-to-list 'org-babel-load-languages '(python . t))
 (add-to-list 'org-babel-load-languages '(C . t))
-; (org-babel-do-load-languages 'org-babel-load-languages '())
+(org-babel-do-load-languages 'org-babel-load-languages '())
 #+END_SRC
 *** Prevent confirmation
 #+BEGIN_SRC emacs-lisp
@@ -177,6 +180,10 @@ Mechanism to set whitespace from the readme at [[https://github.com/bruce/emacs-
    'org-mode-hook
    (lambda ()
      (auto-fill-mode)))
+#+END_SRC
+*** Fontify whole lines
+#+BEGIN_SRC emacs-lisp
+(setq org-fontify-whole-heading-line t)
 #+END_SRC
 ** Combined with evil
 #+BEGIN_SRC emacs-lisp
