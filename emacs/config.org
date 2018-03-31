@@ -421,3 +421,42 @@ From [[http://stackoverflow.com/questions/3417438/closing-all-other-buffers-in-e
         (when (buffer-file-name)
           (revert-buffer t t t)))))
 #+END_SRC
+
+* Desaturate
+#+BEGIN_SRC emacs-lisp
+(defun desaturate-color (color-hex)
+  (require 'color)
+  (apply
+   'color-rgb-to-hex
+   (apply
+    'color-hsl-to-rgb
+    (apply
+     'color-desaturate-hsl
+     `(,@(apply 'color-rgb-to-hsl (color-name-to-rgb color-hex)) 100)))))
+
+(defun desaturate ()
+  (interactive)
+  (mapc
+   (lambda (face)
+     (mapc
+      (lambda (attr)
+        (let ((current (face-attribute face attr)))
+          (unless (or (listp current)
+                      (string= current "unspecified")
+                      (string= current "t")
+                      (not current))
+            (set-face-attribute face nil attr (desaturate-color current)))))
+      '(:foreground :background :underline :box :strike-through
+                    :distant-foreground))
+     (mapc
+      (lambda (complex-attr)
+        ;; Todo implement this
+        (let* ((full (face-attribute face complex-attr))
+              (current (member :color full)))
+          (unless (or (not current)
+                      (not (listp full)))
+            (setcar (cdr current) (desaturate-color (cadr current)))
+            (set-face-attribute face nil complex-attr full))))
+      '(:underline)))
+   (face-list)))
+#+END_SRC
