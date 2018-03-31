@@ -13,6 +13,7 @@
 List out all packages and install them if they're available.
 
 * Customization
+With some text for comparison
 ** Move the file out of init.el
 #+BEGIN_SRC emacs-lisp
   (setq custom-file "~/.emacs.d/custom.el")
@@ -40,18 +41,11 @@ Do this first to try to get the flicker in the gui out of the way quickly
     "Clear existing theme settings instead of layering them"
     (mapc #'disable-theme custom-enabled-themes))
 #+END_SRC
-** And a font such that variable-pitch is neutralized
+** Set up fonts
 #+BEGIN_SRC emacs-lisp
-(mapc
- (lambda (face)
-   (set-face-attribute
-    face
-    nil
-    :family "Fira Code"
-    :height 130
-    :width 'normal
-    :weight 'normal))
- '(default variable-pitch))
+(set-face-attribute 'default nil :family "Fira Code" :height 130)
+(set-face-attribute 'fixed-pitch nil :family "Fira Code" :height 130)
+(set-face-attribute 'variable-pitch nil :family "Georgia")
 #+END_SRC
 ** And a minimal startup
 #+BEGIN_SRC emacs-lisp
@@ -86,7 +80,7 @@ Mechanism to set whitespace from the readme at [[https://github.com/bruce/emacs-
 (set-face-attribute
  'linum-highlight-face
  nil
- :foreground "#FF0000"
+ :foreground "#000000"
  :background (face-attribute 'linum :background))
 #+END_SRC
 
