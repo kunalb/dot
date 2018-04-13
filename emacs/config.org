@@ -43,9 +43,9 @@ Do this first to try to get the flicker in the gui out of the way quickly
 #+END_SRC
 ** Set up fonts
 #+BEGIN_SRC emacs-lisp
-(set-face-attribute 'default nil :family "Fira Code" :height 130)
-(set-face-attribute 'fixed-pitch nil :family "Fira Code" :height 130)
-(set-face-attribute 'variable-pitch nil :family "Palatino")
+(set-face-attribute 'default nil :family "Iosevka" :height 130)
+(set-face-attribute 'fixed-pitch nil :family "Iosevka" :height 130)
+(set-face-attribute 'variable-pitch nil :family "Baskerville")
 #+END_SRC
 ** And a minimal startup
 #+BEGIN_SRC emacs-lisp
@@ -446,17 +446,17 @@ From [[http://stackoverflow.com/questions/3417438/closing-all-other-buffers-in-e
                       (string= current "t")
                       (not current))
             (set-face-attribute face nil attr (funcall fn face current)))))
-      '(:foreground :background :underline :box :strike-through
+      '(:foreground :background :underline :overline :box :strike-through
                     :distant-foreground))
      (mapc
       (lambda (complex-attr)
-        (let* ((full (face-attribute face complex-attr))
+        (let* ((full (copy-tree (face-attribute face complex-attr)))
               (current (member :color full)))
           (unless (or (not current)
                       (not (listp full)))
             (setcar (cdr current) (funcall fn face (cadr current)))
             (set-face-attribute face nil complex-attr full))))
-      '(:underline :box)))
+      '(:underline :overline :box)))
    (face-list)))
 
 (defun desaturate-theme ()
