@@ -61,41 +61,31 @@ Do this first to try to get the flicker in the gui out of the way quickly
 #+BEGIN_SRC emacs-lisp
   (winner-mode t)
 #+END_SRC
-** Linum mode
-*** Activate linum mode with spaces
-Mechanism to set whitespace from the readme at [[https://github.com/bruce/emacs-spacegray-theme][Spacegray theme]].
+** Display line numbers mode
+*** Activate on programming modes
 #+BEGIN_SRC emacs-lisp
 (add-hook 'prog-mode-hook
-          'linum-mode)
-(defadvice linum-update-window (around linum-dynamic activate)
-  (let* ((w (length (number-to-string
-                     (count-lines (point-min) (point-max)))))
-         (linum-format (concat " %" (number-to-string w) "d ")))
-    ad-do-it))
-#+END_SRC
-
-*** Highlight the current line
-#+BEGIN_SRC emacs-lisp
-(hlinum-activate)
+          'display-line-numbers-mode)
 #+END_SRC
 
 ** Fill column
 #+BEGIN_SRC emacs-lisp
 (setq fci-rule-column 80)
-(setq fci-rule-color (face-attribute 'linum :foreground))
 #+END_SRC
 ** Scrolling more naturally
 #+BEGIN_SRC emacs-lisp
-(setq scroll-conservatively 1000)
+(pixel-scroll-mode)
 #+END_SRC
 
 ** Compilation window output
 #+BEGIN_SRC emacs-lisp
 (setq compilation-window-height 15)
 #+END_SRC
-** Truncate lines by default
+** Truncate lines by in code
 #+BEGIN_SRC emacs-lisp
-(toggle-truncate-lines 1)
+(add-hook 'prog-mode
+          (lambda ()
+            (setq-default truncate-lines t)))
 #+END_SRC
 * Evil
 ** I can't type without vim bindings anymore.
@@ -150,9 +140,12 @@ Mechanism to set whitespace from the readme at [[https://github.com/bruce/emacs-
 #+END_SRC
 *** Clean bullets
 #+BEGIN_SRC emacs-lisp
-  (add-hook 'org-mode-hook
-            (lambda ()
-              (org-indent-mode t)))
+(setq org-bullets-bullet-list
+      '("◉" "○"))
+(add-hook 'org-mode-hook
+          (lambda ()
+            (org-bullets-mode 1)
+            (org-indent-mode t)))
 #+END_SRC
 *** Display images
 #+BEGIN_SRC emacs-lisp

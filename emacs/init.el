@@ -1,6 +1,9 @@
 ;;; init.el
 ; Load org config file from both symlinked parent folder and actual parent folder
 
+;; Handling GC better
+(setq gc-cons-threshold (* 50 1000 1000))
+
 ;; Added by Package.el.  This must come before configurations of
 ;; installed packages.  Don't delete this line.  If you don't want it,
 ;; just comment it out by adding a semicolon to the start of the line.
@@ -16,3 +19,5 @@
               (lambda (dotfiles-dir)
                 (directory-files dotfiles-dir t "^[^#]*\\.org$"))
               dotfiles-dirs)))
+
+(setq gc-cons-threshold (* 5 1000 1000))
