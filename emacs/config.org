@@ -87,6 +87,11 @@ Do this first to try to get the flicker in the gui out of the way quickly
           (lambda ()
             (setq-default truncate-lines t)))
 #+END_SRC
+** Sweet Title Bar
+#+BEGIN_SRC emacs-lisp
+(add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
+(add-to-list 'default-frame-alist '(ns-appearance . light))
+#+END_SRC
 * Evil
 ** I can't type without vim bindings anymore.
 #+BEGIN_SRC emacs-lisp
@@ -434,17 +439,17 @@ From [[http://stackoverflow.com/questions/3417438/closing-all-other-buffers-in-e
      (mapc
       (lambda (attr)
         (let ((current (face-attribute face attr)))
-          (unless (or (listp current)
+          (unless (or (not current)
+                      (listp current)
                       (string= current "unspecified")
-                      (string= current "t")
-                      (not current))
+                      (string= current "t"))
             (set-face-attribute face nil attr (funcall fn face current)))))
       '(:foreground :background :underline :overline :box :strike-through
                     :distant-foreground))
      (mapc
       (lambda (complex-attr)
         (let* ((full (copy-tree (face-attribute face complex-attr)))
-              (current (member :color full)))
+               (current (if (listp full) (member :color full))))
           (unless (or (not current)
                       (not (listp full)))
             (setcar (cdr current) (funcall fn face (cadr current)))
