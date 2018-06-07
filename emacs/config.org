@@ -399,6 +399,7 @@ Do this first to try to get the flicker in the gui out of the way quickly
 #+END_SRC
 
 * Buffer Management
+** Close buffers
 From [[http://stackoverflow.com/questions/3417438/closing-all-other-buffers-in-emacs][StackOverflow]]
 #+BEGIN_SRC emacs-lisp
 (defun close-all-buffers ()
@@ -472,5 +473,20 @@ From [[http://stackoverflow.com/questions/3417438/closing-all-other-buffers-in-e
    (lambda (face color)
      (apply
       'color-rgb-to-hex
-      (color-complement color)))))
+      (color-complement color))))
+  (let ((current-ns-appearance (assoc 'ns-appearance default-frame-alist)))
+    (cond ((eq (cdr current-ns-appearance) 'light)
+           (setf (cdr current-ns-appearance) 'dark))
+          ((eq (cdr current-ns-appearance) 'dark)
+           (setf (cdr current-ns-appearance) 'light)))))
+#+END_SRC
+* Mode Line
+#+BEGIN_SRC emacs-lisp
+(setq mode-line-format
+              (list
+               "%& %b%n"
+               " ~ "
+               "%m"
+               " ~ "
+               "%l:%c"))
 #+END_SRC
