@@ -121,13 +121,14 @@ Do this first to try to get the flicker in the gui out of the way quickly
 #+END_SRC
 *** Enable languages
 #+BEGIN_SRC emacs-lisp
-(add-to-list 'org-babel-load-languages '(emacs-lisp . t))
-(add-to-list 'org-babel-load-languages '(dot . t))
-(add-to-list 'org-babel-load-languages '(ditaa . t))
-(add-to-list 'org-babel-load-languages '(ipython . t))
-(add-to-list 'org-babel-load-languages '(python . t))
-(add-to-list 'org-babel-load-languages '(C . t))
-(org-babel-do-load-languages 'org-babel-load-languages '())
+(org-babel-do-load-languages
+ 'org-babel-load-languages
+ '((emacs-lisp . t)
+   (dot . t)
+   (ditaa . t)
+   (python . t)
+   (C . t)
+   (rust . t)))
 #+END_SRC
 *** Prevent confirmation
 #+BEGIN_SRC emacs-lisp
@@ -423,11 +424,12 @@ From [[http://stackoverflow.com/questions/3417438/closing-all-other-buffers-in-e
   (require 'color)
   (apply
    'color-rgb-to-hex
-   (apply
-    'color-hsl-to-rgb
-    (apply
-     'color-desaturate-hsl
-     `(,@(apply 'color-rgb-to-hsl (color-name-to-rgb color-hex)) 100)))))
+   (append (apply
+            'color-hsl-to-rgb
+            (apply
+             'color-desaturate-hsl
+             `(,@(apply 'color-rgb-to-hsl (color-name-to-rgb color-hex)) 100)))
+           '(2))))
 
 (defun transform-theme-colors (fn)
   "Apply FN to the colors on every active face.
