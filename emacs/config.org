@@ -9,7 +9,6 @@
                            ("org" . "http://orgmode.org/elpa/")))
   (package-initialize)
 #+END_SRC
-
 * Customization
 With some text for comparison
 ** Move the file out of init.el
@@ -29,21 +28,22 @@ Do this first to try to get the flicker in the gui out of the way quickly
 (if (boundp 'scroll-bar-mode)
     (scroll-bar-mode -1))
 #+END_SRC
+** Margins
+#+begin_src emacs-lisp
+(setq-default left-margin-width 1 right-margin-width 1)
+#+end_src
 ** Mouse support
 #+BEGIN_SRC emacs-lisp
 (xterm-mouse-mode)
+(setq mouse-wheel-progressive-speed nil)
+(setq focus-follows-mouse "auto-raise")
+(setq mouse-autoselect-window 't)
 #+END_SRC
 ** Improve theme loading; [[https://www.reddit.com/r/emacs/comments/4mzynd/what_emacs_theme_are_you_currently_using/d43c5cw][from reddit]]
 #+BEGIN_SRC emacs-lisp
 (defadvice load-theme (before clear-previous-themes activate)
   "Clear existing theme settings instead of layering them"
   (mapc #'disable-theme custom-enabled-themes))
-#+END_SRC
-** Set up fonts
-#+BEGIN_SRC emacs-lisp
-(set-face-attribute 'default nil :family "Fira Code" :height 100)
-(set-face-attribute 'fixed-pitch nil :family "Fira Code" :height 100)
-(set-face-attribute 'variable-pitch nil :family "LibreBaskerville" :height 110)
 #+END_SRC
 ** And a minimal startup
 #+BEGIN_SRC emacs-lisp
@@ -65,7 +65,6 @@ Do this first to try to get the flicker in the gui out of the way quickly
 (add-hook 'prog-mode-hook
           'display-line-numbers-mode)
 #+END_SRC
-
 ** Fill column
 #+BEGIN_SRC emacs-lisp
 (setq fci-rule-column 80)
@@ -74,7 +73,6 @@ Do this first to try to get the flicker in the gui out of the way quickly
 #+BEGIN_SRC emacs-lisp
 (pixel-scroll-mode)
 #+END_SRC
-
 ** Compilation window output
 #+BEGIN_SRC emacs-lisp
 (setq compilation-window-height 15)
@@ -85,7 +83,7 @@ Do this first to try to get the flicker in the gui out of the way quickly
           (lambda ()
             (setq-default truncate-lines t)))
 #+END_SRC
-** Sweet Title Bar
+** Sweet Title Bar for Mac OS
 #+BEGIN_SRC emacs-lisp
 (add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
 (add-to-list 'default-frame-alist '(ns-appearance . light))
@@ -145,21 +143,19 @@ Do this first to try to get the flicker in the gui out of the way quickly
 #+END_SRC
 *** Clean bullets
 #+BEGIN_SRC emacs-lisp
-(setq org-bullets-bullet-list
-      '("◉" "○"))
+(setq org-bullets-bullet-list '("."))
 (add-hook 'org-mode-hook
           (lambda ()
-            (org-bullets-mode 1)
-            (org-indent-mode t)))
+            (org-bullets-mode 1)))
 #+END_SRC
 *** Display images
 #+BEGIN_SRC emacs-lisp
-  (setq org-startup-with-inline-images t)
-  (add-hook
-   'org-babel-after-execute-hook
-   (lambda ()
-     (when org-inline-image-overlays
-       (org-redisplay-inline-images))))
+(setq org-startup-with-inline-images t)
+(add-hook
+ 'org-babel-after-execute-hook
+ (lambda ()
+   (when org-inline-image-overlays
+     (org-redisplay-inline-images))))
 #+END_SRC
 *** Enable auto-fill mode
 #+BEGIN_SRC emacs-lisp
@@ -168,18 +164,14 @@ Do this first to try to get the flicker in the gui out of the way quickly
    (lambda ()
      (auto-fill-mode)))
 #+END_SRC
-*** Fontify whole lines
-#+BEGIN_SRC emacs-lisp
-(setq org-fontify-whole-heading-line t)
-#+END_SRC
 ** Combined with evil
 #+BEGIN_SRC emacs-lisp
-  (evil-define-key 'normal org-mode-map (kbd "TAB") 'org-cycle)
+(evil-define-key 'normal org-mode-map (kbd "TAB") 'org-cycle)
 #+END_SRC
 ** Bugfixes
 #+BEGIN_SRC emacs-lisp
-  (defun org-font-lock-ensure ()
-    (font-lock-fontify-buffer))
+(defun org-font-lock-ensure ()
+  (font-lock-fontify-buffer))
 #+END_SRC
 ** Expert tagging
 (Doesn't show the tag window till an extra C-c.)
@@ -188,32 +180,32 @@ Do this first to try to get the flicker in the gui out of the way quickly
 #+END_SRC
 ** Tag clicks show sparse tree instead of agenda view
 #+BEGIN_SRC emacs-lisp
-  (defun tag-at-point-in-heading ()
-    "Returns the tag at the current point in the string"
-    (let ((str (buffer-string))
-          (begin (point))
-          (end (point)))
-      (while (not (equal (aref str begin) ?:))
-        (setq begin (- begin 1)))
-      (while (not (equal (aref str end) ?:))
-        (setq end (+ end 1)))
-      (substring str (+ 1 begin) end)))
+(defun tag-at-point-in-heading ()
+  "Returns the tag at the current point in the string"
+  (let ((str (buffer-string))
+        (begin (point))
+        (end (point)))
+    (while (not (equal (aref str begin) ?:))
+      (setq begin (- begin 1)))
+    (while (not (equal (aref str end) ?:))
+      (setq end (+ end 1)))
+    (substring str (+ 1 begin) end)))
 
-  (defun open-sparse-view ()
-    "Shows a sparse tree on clicking a tag instead of org-tags-view"
-    ;; From org-open-at-point, sanity checking that we're on a headline with tags
-    (when (and (org-element-lineage (org-element-context)
-                                    '(headline inlinetask)
-                                    t)
-               (progn (save-excursion (beginning-of-line)
-                                      (looking-at org-complex-heading-regexp))
-                      (and (match-beginning 5)
-                           (> (point) (match-beginning 5)))))
-      (org-match-sparse-tree nil (concat "+" (tag-at-point-in-heading)))
-      't))
+(defun open-sparse-view ()
+  "Shows a sparse tree on clicking a tag instead of org-tags-view"
+  ;; From org-open-at-point, sanity checking that we're on a headline with tags
+  (when (and (org-element-lineage (org-element-context)
+                                  '(headline inlinetask)
+                                  t)
+             (progn (save-excursion (beginning-of-line)
+                                    (looking-at org-complex-heading-regexp))
+                    (and (match-beginning 5)
+                         (> (point) (match-beginning 5)))))
+    (org-match-sparse-tree nil (concat "+" (tag-at-point-in-heading)))
+    't))
 
-  (add-hook 'org-open-at-point-functions
-            'open-sparse-view)
+(add-hook 'org-open-at-point-functions
+          'open-sparse-view)
 #+END_SRC
 ** Add support for not exporting headlines
 #+BEGIN_SRC emacs-lisp
@@ -283,18 +275,13 @@ Do this first to try to get the flicker in the gui out of the way quickly
 #+END_SRC
 
 * Menus
-** [[https://www.emacswiki.org/emacs/InteractivelyDoThings][IDO]]
-#+BEGIN_SRC emacs-lisp
-(setq ido-enable-flex-matching t)
-(setq ido-everywhere t)
-(ido-mode t)
-#+END_SRC
-** [[https://www.emacswiki.org/emacs/Smex][Smex]]
-#+BEGIN_SRC emacs-lisp
-;  (global-set-key (kbd "M-x") 'smex)
-;  (global-set-key (kbd "M-X") 'smex-major-mode-commands)
-;  (global-set-key (kbd "C-c M-x") 'execute-extended-command)
-#+END_SRC
+** Ivy
+#+begin_src emacs-lisp
+(ivy-mode 1)
+(counsel-mode 1)
+(setq ivy-posframe-display-functions-alist '((t . ivy-posframe-display-at-frame-center)))
+(ivy-posframe-mode 1)
+#+end_src
 
 * Language/Project specific
 ** BUCK
@@ -312,10 +299,8 @@ Do this first to try to get the flicker in the gui out of the way quickly
 (setq web-mode-markup-indent-offset 2)
 (setq web-mode-css-indent-offset 2)
 (setq web-mode-code-indent-offset 2)
-
 (setq web-mode-style-padding 2)
 (setq web-mode-script-padding 2)
-
 (setq web-mode-auto-quote-style 2) ; use single quotes
 #+END_SRC
 
@@ -382,10 +367,6 @@ Do this first to try to get the flicker in the gui out of the way quickly
 #+END_SRC
 
 * Browsing
-** Default to mac
-#+BEGIN_SRC emacs-lisp
-(setq browse-url-browser-function 'browse-url-default-macosx-browser)
-#+END_SRC
 ** Enable cookies
 #+BEGIN_SRC emacs-lisp
 (setq w3m-use-cookies t)
@@ -490,3 +471,24 @@ From [[http://stackoverflow.com/questions/3417438/closing-all-other-buffers-in-e
                " ~ "
                "%l:%c"))
 #+END_SRC
+* Speed
+#+begin_src emacs-lisp
+(setq-default xterm-query-timeout nil)
+#+end_src
+* LSP
+#+begin_src emacs-lisp
+(setq lsp-ui-doc-max-width 200)
+(setq gc-cons-threshold 1000000000)
+(setq read-process-output-max (* 1024 1024))
+(setq lsp-idle-delay .1)
+#+end_src
+* Markdown
+#+begin_src emacs-lisp
+(setq markdown-hide-urls t)
+(setq markdown-hide-markup t)
+#+end_src
+* Deft & ZettelDeft
+#+begin_src emacs-lisp
+(setq deft-extensions '("txt" "tex" "org"))
+(setq deft-directory "~/slipbox")
+#+end_src
