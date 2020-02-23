@@ -9,8 +9,6 @@
                            ("org" . "http://orgmode.org/elpa/")))
   (package-initialize)
 #+END_SRC
-** TODO Use =use-package=
-List out all packages and install them if they're available.
 
 * Customization
 With some text for comparison
@@ -24,42 +22,42 @@ With some text for comparison
 ** Minimal UI
 Do this first to try to get the flicker in the gui out of the way quickly
 #+BEGIN_SRC emacs-lisp
-  (tool-bar-mode -1)
-  (menu-bar-mode -1)
-  (if (boundp 'fringe-mode)
-  (fringe-mode -1))
-  (if (boundp 'scroll-bar-mode)
-      (scroll-bar-mode -1))
+(tool-bar-mode -1)
+(menu-bar-mode -1)
+(if (boundp 'fringe-mode)
+(fringe-mode -1))
+(if (boundp 'scroll-bar-mode)
+    (scroll-bar-mode -1))
 #+END_SRC
 ** Mouse support
 #+BEGIN_SRC emacs-lisp
-  (xterm-mouse-mode)
+(xterm-mouse-mode)
 #+END_SRC
 ** Improve theme loading; [[https://www.reddit.com/r/emacs/comments/4mzynd/what_emacs_theme_are_you_currently_using/d43c5cw][from reddit]]
 #+BEGIN_SRC emacs-lisp
-  (defadvice load-theme (before clear-previous-themes activate)
-    "Clear existing theme settings instead of layering them"
-    (mapc #'disable-theme custom-enabled-themes))
+(defadvice load-theme (before clear-previous-themes activate)
+  "Clear existing theme settings instead of layering them"
+  (mapc #'disable-theme custom-enabled-themes))
 #+END_SRC
 ** Set up fonts
 #+BEGIN_SRC emacs-lisp
-(set-face-attribute 'default nil :family "Iosevka" :height 130)
-(set-face-attribute 'fixed-pitch nil :family "Iosevka" :height 130)
-(set-face-attribute 'variable-pitch nil :family "Baskerville")
+(set-face-attribute 'default nil :family "Fira Code" :height 100)
+(set-face-attribute 'fixed-pitch nil :family "Fira Code" :height 100)
+(set-face-attribute 'variable-pitch nil :family "LibreBaskerville" :height 110)
 #+END_SRC
 ** And a minimal startup
 #+BEGIN_SRC emacs-lisp
-  (setq inhibit-startup-message t)
-  (setq inhibit-splash-screen t)
-  (setq initial-scratch-message nil)
+(setq inhibit-startup-message t)
+(setq inhibit-splash-screen t)
+(setq initial-scratch-message nil)
 #+END_SRC
 ** Disable the bell
 #+BEGIN_SRC emacs-lisp
-  (setq ring-bell-function 'ignore)
+(setq ring-bell-function 'ignore)
 #+END_SRC
 ** Buffer Switching
 #+BEGIN_SRC emacs-lisp
-  (winner-mode t)
+(winner-mode t)
 #+END_SRC
 ** Display line numbers mode
 *** Activate on programming modes
@@ -95,19 +93,19 @@ Do this first to try to get the flicker in the gui out of the way quickly
 * Evil
 ** I can't type without vim bindings anymore.
 #+BEGIN_SRC emacs-lisp
-  (evil-mode t)
+(evil-mode t)
 #+END_SRC
 ** Allow some common typos
 #+BEGIN_SRC emacs-lisp
-  (evil-ex-define-cmd "W[rite]" 'save-buffer)
-  (evil-ex-define-cmd "V[split]" 'evil-window-vsplit)
+(evil-ex-define-cmd "W[rite]" 'save-buffer)
+(evil-ex-define-cmd "V[split]" 'evil-window-vsplit)
 #+END_SRC
 
 * Org
 ** Babel
 *** Better source code window editing
 #+BEGIN_SRC emacs-lisp
-  (setq org-src-window-setup 'other-window)
+(setq org-src-window-setup 'other-window)
 #+END_SRC
 *** Highlight and indent source code blocks
 #+BEGIN_SRC emacs-lisp
@@ -128,16 +126,17 @@ Do this first to try to get the flicker in the gui out of the way quickly
    (ditaa . t)
    (python . t)
    (C . t)
-   (rust . t)))
+   (rust . t)
+   (shell . t)))
 #+END_SRC
 *** Prevent confirmation
 #+BEGIN_SRC emacs-lisp
-  (setq org-confirm-babel-evaluate nil)
+(setq org-confirm-babel-evaluate nil)
 #+END_SRC
 *** Use Web mode for HTML
 #+BEGIN_SRC emacs-lisp
-  (add-to-list 'org-src-lang-modes
-               '("html" . web))
+(add-to-list 'org-src-lang-modes
+             '("html" . web))
 #+END_SRC
 ** UI
 *** Hide markers
@@ -218,24 +217,24 @@ Do this first to try to get the flicker in the gui out of the way quickly
 #+END_SRC
 ** Add support for not exporting headlines
 #+BEGIN_SRC emacs-lisp
-  (require 'ox-extra) ; from org-plus-contrib
-  (ox-extras-activate '(ignore-headlines))
+(require 'ox-extra) ; from org-plus-contrib
+(ox-extras-activate '(ignore-headlines))
 #+END_SRC
 ** Add support for publishing 'web' src as is
 #+BEGIN_SRC emacs-lisp
-  (defun org-babel-execute:web (body params)
-    body)
+(defun org-babel-execute:web (body params)
+  body)
 #+END_SRC
 * Emamux
 ** Customization
 #+BEGIN_SRC emacs-lisp
-  (setq emamux:use-nearest-pane t)
+(setq emamux:use-nearest-pane t)
 #+END_SRC
 ** Some useful shortcuts
 #+BEGIN_SRC emacs-lisp
-  (define-key evil-normal-state-map (kbd "C-c r") 'emamux:run-last-command)
-  (define-key evil-normal-state-map (kbd "C-c x") 'emamux:run-command)
-  (define-key evil-normal-state-map (kbd "C-c i") 'emamux:inspect-runner)
+(define-key evil-normal-state-map (kbd "C-c r") 'emamux:run-last-command)
+(define-key evil-normal-state-map (kbd "C-c x") 'emamux:run-command)
+(define-key evil-normal-state-map (kbd "C-c i") 'emamux:inspect-runner)
 #+END_SRC
 * Compiling
 ** Keyboard shortcut
@@ -245,80 +244,79 @@ Do this first to try to get the flicker in the gui out of the way quickly
 * Man Pages
 #+BEGIN_SRC emacs-lisp
 (setq Man-notify-method 'pushy)
-
 #+END_SRC
 * Editing
 ** Indentation
 #+BEGIN_SRC emacs-lisp
-  (setq c-basic-offset 2)
-  (setq tab-width 2)
-  (setq-default indent-tabs-mode nil)
+(setq c-basic-offset 2)
+(setq tab-width 2)
+(setq-default indent-tabs-mode nil)
 #+END_SRC
 ** Backups & autosaves
 #+BEGIN_SRC emacs-lisp
-  (setq auto-save-default nil)
-  (setq backup-directory-alist
-        `((".*" . ,temporary-file-directory)))
-  (setq auto-save-file-name-transforms
-        `((".*" ,temporary-file-directory t)))
+(setq auto-save-default nil)
+(setq backup-directory-alist
+      `((".*" . ,temporary-file-directory)))
+(setq auto-save-file-name-transforms
+      `((".*" ,temporary-file-directory t)))
 #+END_SRC
 ** Better braces
 *** [[https://github.com/Fuco1/smartparens][Smartparens]]
 #+BEGIN_SRC emacs-lisp
-  (require 'smartparens-config)
-  (add-hook 'prog-mode-hook 'turn-on-smartparens-mode)
-  (define-key smartparens-mode-map (kbd "M-f") 'sp-forward-slurp-sexp)
-  (define-key smartparens-mode-map (kbd "M-b") 'sp-backward-slurp-sexp)
-  (define-key smartparens-mode-map (kbd "M-F") 'sp-forward-barf-sexp)
-  (define-key smartparens-mode-map (kbd "M-B") 'sp-backward-barf-sexp)
-  (define-key smartparens-mode-map (kbd "M-s") 'sp-splice-sexp)
-  (define-key smartparens-mode-map (kbd "C-k") 'sp-kill-sexp)
+(require 'smartparens-config)
+(add-hook 'prog-mode-hook 'turn-on-smartparens-mode)
+(define-key smartparens-mode-map (kbd "M-f") 'sp-forward-slurp-sexp)
+(define-key smartparens-mode-map (kbd "M-b") 'sp-backward-slurp-sexp)
+(define-key smartparens-mode-map (kbd "M-F") 'sp-forward-barf-sexp)
+(define-key smartparens-mode-map (kbd "M-B") 'sp-backward-barf-sexp)
+(define-key smartparens-mode-map (kbd "M-s") 'sp-splice-sexp)
+(define-key smartparens-mode-map (kbd "C-k") 'sp-kill-sexp)
 #+END_SRC
 *** Highlight parenthesis
 #+BEGIN_SRC emacs-lisp
-  (show-paren-mode t)
+(show-paren-mode t)
 #+END_SRC
 ** Whitespace
 #+BEGIN_SRC emacs-lisp
-  (add-hook 'before-save-hook 'whitespace-cleanup)
-  (setq require-final-newline t)
+(add-hook 'before-save-hook 'whitespace-cleanup)
+(setq require-final-newline t)
 #+END_SRC
 
 * Menus
 ** [[https://www.emacswiki.org/emacs/InteractivelyDoThings][IDO]]
 #+BEGIN_SRC emacs-lisp
-  (setq ido-enable-flex-matching t)
-  (setq ido-everywhere t)
-  (ido-mode t)
+(setq ido-enable-flex-matching t)
+(setq ido-everywhere t)
+(ido-mode t)
 #+END_SRC
 ** [[https://www.emacswiki.org/emacs/Smex][Smex]]
 #+BEGIN_SRC emacs-lisp
-  (global-set-key (kbd "M-x") 'smex)
-  (global-set-key (kbd "M-X") 'smex-major-mode-commands)
-  (global-set-key (kbd "C-c M-x") 'execute-extended-command)
+;  (global-set-key (kbd "M-x") 'smex)
+;  (global-set-key (kbd "M-X") 'smex-major-mode-commands)
+;  (global-set-key (kbd "C-c M-x") 'execute-extended-command)
 #+END_SRC
 
 * Language/Project specific
 ** BUCK
 *** Trigger python mode
 #+BEGIN_SRC emacs-lisp
-  (add-to-list 'auto-mode-alist '(".*/BUCK$" . python-mode))
+(add-to-list 'auto-mode-alist '(".*/BUCK$" . python-mode))
 #+END_SRC
 ** Scheme
 *** Set up chicken scheme
 #+BEGIN_SRC emacs-lisp
-  (setq scheme-program-name "/usr/local/bin/csi -:c")
+(setq scheme-program-name "/usr/local/bin/csi -:c")
 #+END_SRC
 ** Web Mode
 #+BEGIN_SRC emacs-lisp
-  (setq web-mode-markup-indent-offset 2)
-  (setq web-mode-css-indent-offset 2)
-  (setq web-mode-code-indent-offset 2)
+(setq web-mode-markup-indent-offset 2)
+(setq web-mode-css-indent-offset 2)
+(setq web-mode-code-indent-offset 2)
 
-  (setq web-mode-style-padding 2)
-  (setq web-mode-script-padding 2)
+(setq web-mode-style-padding 2)
+(setq web-mode-script-padding 2)
 
-  (setq web-mode-auto-quote-style 2) ; use single quotes
+(setq web-mode-auto-quote-style 2) ; use single quotes
 #+END_SRC
 
 ** Rust
@@ -334,37 +332,37 @@ Do this first to try to get the flicker in the gui out of the way quickly
 * Version Control
 ** Disable by default
 #+BEGIN_SRC emacs-lisp
-  (setq vc-handled-backends ())
+(setq vc-handled-backends ())
 #+END_SRC
 ** Customize Monky, for when it's loaded
 *** Use command server for speed
 #+BEGIN_SRC emacs-lisp
-  (setq monky-process-type 'cmdserver)
+(setq monky-process-type 'cmdserver)
 #+END_SRC
 *** And add support for a nicer log file
 #+BEGIN_SRC emacs-lisp
-  (defun hg-file-history ()
-    (interactive)
-    (require 'monky)
-    (monky-run-hg-async
-     "log"
-     "--template"
-     "\n{rev}) {date|shortdate}/{author|user}\n{desc|fill68}\n↘\n"
-     buffer-file-name))
+(defun hg-file-history ()
+  (interactive)
+  (require 'monky)
+  (monky-run-hg-async
+   "log"
+   "--template"
+   "\n{rev}) {date|shortdate}/{author|user}\n{desc|fill68}\n↘\n"
+   buffer-file-name))
 #+END_SRC
 
 * Utilities
 ** Current file name
 #+BEGIN_SRC emacs-lisp
-  (defun path ()
-    (interactive)
-    (message (buffer-file-name)))
+(defun path ()
+  (interactive)
+  (message (buffer-file-name)))
 #+END_SRC
 
 * GDB
 ** Show all the windows on start
 #+BEGIN_SRC emacs-lisp
-  (setq gdb-many-windows 't)
+(setq gdb-many-windows 't)
 #+END_SRC
 * Neotree
 ** Simple theme
@@ -374,23 +372,23 @@ Do this first to try to get the flicker in the gui out of the way quickly
 * Dired
 ** Hide permissions and owners to make file lists less noisy [[http://ergoemacs.org/emacs/file_management.html][(from Xah Lee's blog)]]
 #+BEGIN_SRC emacs-lisp
-  (add-hook 'dired-mode-hook
-            (lambda ()
-              (dired-hide-details-mode 1)))
+(add-hook 'dired-mode-hook
+          (lambda ()
+            (dired-hide-details-mode 1)))
 #+END_SRC
 ** Disable ls by default in dired
 #+BEGIN_SRC emacs-lisp
-   (setq dired-use-ls-dired nil)
+(setq dired-use-ls-dired nil)
 #+END_SRC
 
 * Browsing
 ** Default to mac
 #+BEGIN_SRC emacs-lisp
-  (setq browse-url-browser-function 'browse-url-default-macosx-browser)
+(setq browse-url-browser-function 'browse-url-default-macosx-browser)
 #+END_SRC
 ** Enable cookies
 #+BEGIN_SRC emacs-lisp
-  (setq w3m-use-cookies t)
+(setq w3m-use-cookies t)
 #+END_SRC
 
 * Auto completion
@@ -409,12 +407,12 @@ From [[http://stackoverflow.com/questions/3417438/closing-all-other-buffers-in-e
 #+END_SRC
 ** Reload files
 #+BEGIN_SRC emacs-lisp
-  (defun revert-all-buffers ()
-    (interactive)
-    (dolist (buf (buffer-list))
-      (with-current-buffer buf
-        (when (buffer-file-name)
-          (revert-buffer t t t)))))
+(defun revert-all-buffers ()
+  (interactive)
+  (dolist (buf (buffer-list))
+    (with-current-buffer buf
+      (when (buffer-file-name)
+        (revert-buffer t t t)))))
 #+END_SRC
 
 * Desaturate

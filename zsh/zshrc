@@ -23,19 +23,19 @@ setopt EXTENDED_HISTORY
 setopt INC_APPEND_HISTORY_TIME
 
 # Set up java
-export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk1.8.0_131.jdk/Contents/Home
+#export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk1.8.0_131.jdk/Contents/Home
 
 # Adjust path
-export PATH=/Users/$USER/bin:$PATH
-export PATH=/Users/$USER/.cargo/bin:$PATH
+export PATH=/home/$USER/bin:$PATH
+# export PATH=/Users/$USER/.cargo/bin:$PATH
 
 # Enable colours
 autoload -U colors && colors
 
 # Nicer prompts
-PROMPT="%(0?..%F{088}└─ %f%F{160}%? %f
-)%F{088}┌─ %f%F{249}%D{%H.%M.%S}%f%F{088} ─ %f%F{249}%~ %f%F{088}─%f
-%F{088}┕ %f "
+PROMPT="%(0?..%F{027}-- %f%F{027}%? %f
+)%F{027}-- %f%F{249}%D{%H.%M.%S}%f%F{027} - %f%F{249}%~ %f%F{027}-%f
+   "
 
 # Load aliases
 test -f ~/.aliases && . ~/.aliases
@@ -58,4 +58,8 @@ autoload -Uz compinit
 compinit -i
 
 # Racer
-export RUST_SRC_PATH="$(rustc --print sysroot)/lib/rustlib/src/rust/src"
+# export RUST_SRC_PATH="$(rustc --print sysroot)/lib/rustlib/src/rust/src"
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
