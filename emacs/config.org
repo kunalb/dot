@@ -3,12 +3,12 @@
 * Packages
 ** Set up package archives: live on the bleeding edge.
 #+BEGIN_SRC emacs-lisp
-  (require 'package)
-  (setq package-archives '(("melpa" . "http://melpa.milkbox.net/packages/")
-                           ("elpa" . "http://elpa.gnu.org/packages/")
-                           ("org" . "http://orgmode.org/elpa/")))
-  (package-initialize)
+(require 'package)
+(setq package-archives '(("melpa" . "https://melpa.org/packages/")
+                         ("elpa" . "http://elpa.gnu.org/packages/")
+                         ("org" . "http://orgmode.org/elpa/")))
 #+END_SRC
+
 * Customization
 With some text for comparison
 ** Move the file out of init.el
@@ -141,13 +141,6 @@ Do this first to try to get the flicker in the gui out of the way quickly
 #+BEGIN_SRC emacs-lisp
   (setq org-hide-emphasis-markers t)
 #+END_SRC
-*** Clean bullets
-#+BEGIN_SRC emacs-lisp
-(setq org-bullets-bullet-list '("."))
-(add-hook 'org-mode-hook
-          (lambda ()
-            (org-bullets-mode 1)))
-#+END_SRC
 *** Display images
 #+BEGIN_SRC emacs-lisp
 (setq org-startup-with-inline-images t)
@@ -224,10 +217,28 @@ Do this first to try to get the flicker in the gui out of the way quickly
 #+END_SRC
 ** Some useful shortcuts
 #+BEGIN_SRC emacs-lisp
-(define-key evil-normal-state-map (kbd "C-c r") 'emamux:run-last-command)
-(define-key evil-normal-state-map (kbd "C-c x") 'emamux:run-command)
-(define-key evil-normal-state-map (kbd "C-c i") 'emamux:inspect-runner)
+(setq tr--last-command nil)
+
+(defun tr (command)
+  "Run the specified command in the currently active tmux pane"
+  (interactive "sCommand: ")
+  (setq tr--last-command command)
+  (call-process "tmux" nil nil nil "send-keys" command "Enter"))
+
+(defun trr ()
+  "Re-run the previous command"
+  (interactive)
+  (if tr--last-command
+      (call-process "tmux" nil nil nil "send-keys" tr--last-command "Enter")
+    (message "No available previous command!")))
+
+(global-set-key (kbd "C-c x") 'tr)
+(global-set-key (kbd "C-c r") 'trr)
 #+END_SRC
+
+#+RESULTS:
+: trr
+
 * Compiling
 ** Keyboard shortcut
 #+BEGIN_SRC emacs-lisp
@@ -279,8 +290,8 @@ Do this first to try to get the flicker in the gui out of the way quickly
 #+begin_src emacs-lisp
 (ivy-mode 1)
 (counsel-mode 1)
-(setq ivy-posframe-display-functions-alist '((t . ivy-posframe-display-at-frame-center)))
-(ivy-posframe-mode 1)
+; (setq ivy-posframe-display-functions-alist '((t . ivy-posframe-display-at-frame-center)))
+; (ivy-posframe-mode 1)
 #+end_src
 
 * Language/Project specific
@@ -486,9 +497,4 @@ From [[http://stackoverflow.com/questions/3417438/closing-all-other-buffers-in-e
 #+begin_src emacs-lisp
 (setq markdown-hide-urls t)
 (setq markdown-hide-markup t)
-#+end_src
-* Deft & ZettelDeft
-#+begin_src emacs-lisp
-(setq deft-extensions '("txt" "tex" "org"))
-(setq deft-directory "~/slipbox")
 #+end_src
