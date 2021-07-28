@@ -1,0 +1,16 @@
+font:
+  normal:
+    family: DejaVu Sans Mono
+    style: Book
+
+  italic:
+    family: DejaVu Sans Mono
+    style: Italic
+
+  bold:
+    family: DejaVu Sans Mono
+    style: Bold
+
+  size: 6
+
+live_config_reload: true
