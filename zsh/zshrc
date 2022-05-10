@@ -1,3 +1,5 @@
+fpath=($fpath /usr/share/zsh/5.8.1/functions)
+
 # Editors
 export EDITOR="e"
 
@@ -26,10 +28,18 @@ setopt INC_APPEND_HISTORY_TIME
 #export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk1.8.0_131.jdk/Contents/Home
 
 # Adjust path
-export PATH=/home/$USER/bin:/home/$USER/.local/bin:/home/$USER/builds/julia-1.6.2/bin:/home/$USER/dev/anaconda3/bin:$PATH
+export PATH=/home/$USER/bin:$PATH
+export PATH=~/.local/bin:/usr/local/bin:$PATH
+
 
 # Enable colours
 autoload -U colors && colors
+
+autoload -Uz compinit
+compinit -i
+
+# zsh-autocomplete
+# source ~/builds/zsh-autocomplete/zsh-autocomplete.plugin.zsh
 
 # Nicer prompts
 PROMPT="%(0?..-- %?
@@ -50,10 +60,10 @@ scan() {
     grep -i $1 -r .
 }
 
-# Completions
-fpath+=~/.zfunc
-
-autoload -Uz compinit
-compinit -i
-
 source $HOME/.cargo/env
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"

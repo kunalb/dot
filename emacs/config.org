@@ -4,9 +4,10 @@
 ** Set up package archives: live on the bleeding edge.
 #+BEGIN_SRC emacs-lisp
 (require 'package)
-(setq package-archives '(("melpa" . "https://melpa.org/packages/")
-                         ("elpa" . "http://elpa.gnu.org/packages/")
-                         ("org" . "http://orgmode.org/elpa/")))
+(setq package-archives
+      '(("melpa" . "http://melpa.org/packages/")
+        ("elpa" . "http://elpa.gnu.org/packages/")
+        ))
 #+END_SRC
 
 * Customization
@@ -79,9 +80,7 @@ Do this first to try to get the flicker in the gui out of the way quickly
 #+END_SRC
 ** Truncate lines by in code
 #+BEGIN_SRC emacs-lisp
-(add-hook 'prog-mode
-          (lambda ()
-            (setq-default truncate-lines t)))
+(setq-default truncate-lines t)
 #+END_SRC
 ** Sweet Title Bar for Mac OS
 #+BEGIN_SRC emacs-lisp
@@ -213,7 +212,7 @@ Do this first to try to get the flicker in the gui out of the way quickly
 * Emamux
 ** Customization
 #+BEGIN_SRC emacs-lisp
-(setq emamux:use-nearest-pane t)
+;(setq emamux:use-nearest-pane t)
 #+END_SRC
 ** Some useful shortcuts
 #+BEGIN_SRC emacs-lisp
@@ -291,6 +290,8 @@ Do this first to try to get the flicker in the gui out of the way quickly
 (ivy-mode 1)
 (counsel-mode 1)
 ; (setq ivy-posframe-display-functions-alist '((t . ivy-posframe-display-at-frame-center)))
+; (setq ivy-posframe-display-functions-alist
+;       '((t . ivy-posframe-display-at-frame-center)))
 ; (ivy-posframe-mode 1)
 #+end_src
 
@@ -317,11 +318,11 @@ Do this first to try to get the flicker in the gui out of the way quickly
 
 ** Rust
 #+BEGIN_SRC emacs-lisp
-(add-hook 'rust-mode-hook #'racer-mode)
-(add-hook 'rust-mode-hook
-          (lambda ()
-           (define-key rust-mode-map (kbd "TAB") #'company-indent-or-complete-common)))
-(add-hook 'racer-mode-hook #'eldoc-mode)
+; (add-hook 'rust-mode-hook #'racer-mode)
+; (add-hook 'rust-mode-hook
+;           (lambda ()
+;            (define-key rust-mode-map (kbd "TAB") #'company-indent-or-complete-common)))
+; (add-hook 'racer-mode-hook #'eldoc-mode)
 (add-hook 'flycheck-mode-hook #'flycheck-rust-setup)
 #+END_SRC
 
@@ -488,13 +489,18 @@ From [[http://stackoverflow.com/questions/3417438/closing-all-other-buffers-in-e
 #+end_src
 * LSP
 #+begin_src emacs-lisp
-(setq lsp-ui-doc-max-width 200)
+; (setq lsp-ui-doc-max-width 200)
 (setq gc-cons-threshold 1000000000)
 (setq read-process-output-max (* 1024 1024))
 (setq lsp-idle-delay .1)
+(setq lsp-ui-doc-enable nil)
 #+end_src
 * Markdown
 #+begin_src emacs-lisp
 (setq markdown-hide-urls t)
 (setq markdown-hide-markup t)
+#+end_src
+* Javascript
+#+begin_src emacs-lisp
+(setq js-indent-level 2)
 #+end_src
