@@ -23,8 +23,10 @@ exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
 # and nm-applet is a desktop environment-independent system tray GUI for it.
 exec --no-startup-id nm-applet
 
+exec --no-startup-id xsetroot -solid "#333333"
+
 # Fan indicator
-exec --no-startup-id clevo-fan
+# exec --no-startup-id clevo-fan
 
 # Use pactl to adjust volume in PulseAudio.
 set $refresh_i3status killall -SIGUSR1 i3status
@@ -183,14 +185,13 @@ bar {
 
 # Colors
 # class                 border  backgr. text    indicator child_border
-client.focused          #111111 #000000 #ffffff #2e9ef4   #000000
+client.focused          #111111 #000000 #ffffff #2e9ef4   #cc0000
 client.focused_inactive #333333 #5f676a #ffffff #484e50   #5f676a
 client.unfocused        #333333 #222222 #888888 #292d2e   #222222
 client.urgent           #2f343a #900000 #ffffff #900000   #900000
 client.placeholder      #000000 #0c0c0c #ffffff #000000   #0c0c0c
 
 client.background       #ffffff
-
 
 # Windows
 for_window [class="Alacritty"] border pixel 1

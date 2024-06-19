@@ -7,6 +7,7 @@
 (setq package-archives
       '(("melpa" . "http://melpa.org/packages/")
         ("elpa" . "http://elpa.gnu.org/packages/")
+        ("nongnu-elpa" . "https://elpa.nongnu.org/nongnu/")
         ))
 #+END_SRC
 
@@ -159,6 +160,7 @@ Do this first to try to get the flicker in the gui out of the way quickly
 ** Combined with evil
 #+BEGIN_SRC emacs-lisp
 (evil-define-key 'normal org-mode-map (kbd "TAB") 'org-cycle)
+
 #+END_SRC
 ** Bugfixes
 #+BEGIN_SRC emacs-lisp
@@ -231,8 +233,23 @@ Do this first to try to get the flicker in the gui out of the way quickly
       (call-process "tmux" nil nil nil "send-keys" tr--last-command "Enter")
     (message "No available previous command!")))
 
+(defun trb ()
+ (interactive)
+ (call-process "tmux" nil nil nil "send-keys" (buffer-string) "Enter"))
+
+(defun trl ()
+ (interactive)
+ (call-process "tmux" nil nil nil "send-keys" (thing-at-point 'line) "Enter"))
+
+(defun trh (start end)
+ (interactive "r")
+ (call-process "tmux" nil nil nil "send-keys" (buffer-substring start end) "Enter"))
+
 (global-set-key (kbd "C-c x") 'tr)
 (global-set-key (kbd "C-c r") 'trr)
+(global-set-key (kbd "C-c b") 'trb)
+(global-set-key (kbd "C-c h") 'trh)
+(global-set-key (kbd "C-c l") 'trl)
 #+END_SRC
 
 #+RESULTS:
@@ -323,7 +340,7 @@ Do this first to try to get the flicker in the gui out of the way quickly
 ;           (lambda ()
 ;            (define-key rust-mode-map (kbd "TAB") #'company-indent-or-complete-common)))
 ; (add-hook 'racer-mode-hook #'eldoc-mode)
-(add-hook 'flycheck-mode-hook #'flycheck-rust-setup)
+; (add-hook 'flycheck-mode-hook #'flycheck-rust-setup)
 #+END_SRC
 
 * Version Control
@@ -387,7 +404,12 @@ Do this first to try to get the flicker in the gui out of the way quickly
 * Auto completion
 #+BEGIN_SRC emacs-lisp
 (add-hook 'prog-mode-hook 'company-mode)
+(add-hook 'company-mode-hook
+          (lambda ()
+            (define-key evil-insert-state-map (kbd "C-.") 'company-complete)))
 (setq company-tooltip-align-annotations t)
+(setq company-idle-delay 0)
+(setq company-minimum-prefix-length 2)
 #+END_SRC
 
 * Buffer Management
@@ -497,8 +519,8 @@ From [[http://stackoverflow.com/questions/3417438/closing-all-other-buffers-in-e
 #+end_src
 * Markdown
 #+begin_src emacs-lisp
-(setq markdown-hide-urls t)
-(setq markdown-hide-markup t)
+; (setq markdown-hide-urls nil)
+; (setq markdown-hide-markup nil)
 #+end_src
 * Javascript
 #+begin_src emacs-lisp

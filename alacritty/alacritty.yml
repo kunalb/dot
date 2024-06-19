@@ -1,39 +1,116 @@
 font:
   normal:
-    family: Inconsolata
+    family: BerkeleyMono
     style: Regular
   italic:
-    family: Inconsolata
+    family: BerkeleyMono
     style: Italic
   bold:
-    family: Inconsolata
+    family: BerkeleyMono
     style: Bold
   size: 10
 live_config_reload: true
-colors:
-  name: Atelierdune (light)
-  author: Chris Kempson
-  primary:
-    background: "#fefbec"
-    foreground: "#6e6b5e"
-  cursor:
-    text: "#fefbec"
-    cursor: "#6e6b5e"
-  normal:
-    black: "#20201d"
-    red: "#d73737"
-    green: "#60ac39"
-    yellow: "#cfb017"
-    blue: "#6684e1"
-    magenta: "#b854d4"
-    cyan: "#1fad83"
-    white: "#a6a28c"
-  bright:
-    black: "#7d7a68"
-    red: "#d73737"
-    green: "#60ac39"
-    yellow: "#cfb017"
-    blue: "#6684e1"
-    magenta: "#b854d4"
-    cyan: "#1fad83"
-    white: "#fefbec"
+
+import:
+  - /home/kunalb/.config/alacritty/themes/themes/alabaster.yaml
+
+
+# afterglow.yaml
+# alabaster_dark.yaml
+# alabaster.yaml
+# argonaut.yaml
+# atom_one_light.yaml
+# ayu_dark.yaml
+# ayu_light.yaml
+# baitong.yaml
+# base16_default_dark.yaml
+# blood_moon.yaml
+# bluish.yaml
+# breeze.yaml
+# campbell.yaml
+# carbonfox.yaml
+# catppuccin.yaml
+# challenger_deep.yaml
+# citylights.yaml
+# Cobalt2.yaml
+# cyber_punk_neon.yaml
+# darcula.yaml
+# dark_pastels.yaml
+# deep_space.yaml
+# doom_one.yaml
+# dracula.yaml
+# everforest_dark.yaml
+# everforest_light.yaml
+# falcon.yaml
+# flat_remix.yaml
+# github_dark_colorblind.yaml
+# github_dark_default.yaml
+# github_dark.yaml
+# github_dimmed.yaml
+# github_light_colorblind.yaml
+# github_light_default.yaml
+# github_light.yaml
+# gnome_terminal.yaml
+# gotham.yaml
+# gruvbox_dark.yaml
+# gruvbox_light.yaml
+# gruvbox_material_medium_dark.yaml
+# gruvbox_material_medium_light.yaml
+# hardhacker.yaml
+# high_contrast.yaml
+# horizon-dark.yaml
+# hyper.yaml
+# inferno.yaml
+# iterm.yaml
+# kanagawa_dragon.yaml
+# kanagawa_wave.yaml
+# konsole_linux.yaml
+# low_contrast.yaml
+# Mariana.yaml
+# marine_dark.yaml
+# material_theme_mod.yaml
+# material_theme.yaml
+# meliora.yml
+# midnight-haze.yaml
+# monokai_charcoal.yaml
+# monokai_pro.yaml
+# moonlight_ii_vscode.yaml
+# msx.yaml
+# nightfox.yaml
+# night_owlish_light.yaml
+# noctis-lux.yaml
+# nordic.yaml
+# nord_light.yaml
+# nord.yaml
+# oceanic_next.yaml
+# omni.yaml
+# one_dark.yaml
+# palenight.yaml
+# papercolor_dark.yaml
+# papercolor_light.yaml
+# papertheme.yaml
+# pencil_dark.yaml
+# pencil_light.yaml
+# rainbow.yaml
+# remedy_dark.yaml
+# rose-pine-dawn.yaml
+# rose-pine-moon.yaml
+# rose-pine.yaml
+# seashells.yaml
+# smoooooth.yaml
+# snazzy.yaml
+# solarized_dark.yaml
+# solarized_light.yaml
+# taerminal.yaml
+# tango_dark.yaml
+# tender.yaml
+# terminal_app.yaml
+# thelovelace.yaml
+# tokyo-night-storm.yaml
+# tokyo-night.yaml
+# tomorrow_night_bright.yaml
+# tomorrow_night.yaml
+# ubuntu.yaml
+# wombat.yaml
+# xterm.yaml
+# zenburn.yaml
