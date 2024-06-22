@@ -1,0 +1,89 @@
+# fpath=($fpath /usr/share/zsh/5.8.1/functions)
+
+# Editors
+export EDITOR="nvim"
+
+# Extended globbing is really fun
+setopt extendedglob
+
+# But only with Vim bindings
+bindkey -v
+
+# But I still want incremental backwards search
+bindkey "^R" history-incremental-pattern-search-backward
+
+# I really, really dislike interrupts
+unsetopt beep
+unsetopt hist_beep
+unsetopt list_beep
+
+# History
+export HISTFILE=$HOME/.zsh_history
+export HISTSIZE=100000
+export SAVEHIST=100000
+setopt EXTENDED_HISTORY
+setopt INC_APPEND_HISTORY_TIME
+
+# Adjust path
+export PATH=/home/$USER/bin:$PATH
+
+# Enable colours
+autoload -U colors && colors
+
+autoload -Uz compinit
+compinit -i
+
+# Nicer prompts
+line="$(repeat 1000 echo -n ┈)"
+PROMPT="%(?..%F{red}# ┈ %B%?%b%f
+)%F{yellow}# ┈%f %D %*%F{yellow} ┈ %f%~%F{yellow} %-2<<$line%<< #%f
+"
+
+# Load aliases
+test -f ~/.aliases && . ~/.aliases
+
+# Nicer tab completion
+zstyle ':completion:*' menu select
+
+# Helper functions
+scan() {
+    grep -i $1 -r .
+}
+
+# Vim editing
+autoload edit-command-line
+zle -N edit-command-line
+bindkey -M vicmd m edit-command-line
+
+
+autoload -Uz compinit
+compinit -i
+
+
+export FZF_CTRL_R_OPTS="--preview 'echo {}' --preview-window down:3:hidden:wrap --bind '?:toggle-preview' --layout=reverse"
+
+function _print_all_panes() {
+  for pane_id in $(tmux list-panes -F '#{pane_id}'); do
+    tmux capture-pane -p -J -S 0 -E - -t "$pane_id" | tr ' ' '\n' | sort -u | rg '[a-zA-Z0-9]+'
+  done
+}
+
+_tmux_pane_words() {
+  local current_word="${LBUFFER##* }"
+  local new_rbuffer="${RBUFFER/#[^ ]##/}"
+  local prompt="${LBUFFER% *} ␣ $new_rbuffer "
+
+  local selected_word=$(_print_all_panes | fzf --query="$current_word" --prompt="$prompt" --height=20 --layout=reverse --no-sort --print-query | tail -n1)
+  if [[ -n $selected_word ]]; then
+    local new_lbuffer="${LBUFFER% *} $selected_word"
+    BUFFER="$new_lbuffer$new_rbuffer"
+    CURSOR="${#${new_lbuffer}}"
+  fi
+
+  zle redisplay
+}
+
+zle -N _tmux_pane_words
+bindkey '^U' _tmux_pane_words
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh || true
