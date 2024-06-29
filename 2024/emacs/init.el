@@ -70,10 +70,16 @@
 (use-package evil
   :init
   (setq evil-respect-visual-line-mode t)
+  (setq evil-want-keybinding nil)
+  (setq evil-want-integration t)
   :config
   (evil-mode t)
   (evil-ex-define-cmd "W[rite]" 'save-buffer)
   (evil-ex-define-cmd "V[split]" 'evil-window-vsplit))
+
+(use-package evil-collection
+  :config
+  (evil-collection-init))
 
 ;;; Org Mode
 (use-package org
@@ -225,9 +231,6 @@
 	web-mode-style-padding 2
 	web-mode-script-padding 2
 	web-mode-auto-quote-style 2))
-
-;;; Version Control
-(setq vc-handled-backends ())
 
 ;;;; Monky (Mercurial)
 (use-package monky
@@ -383,15 +386,27 @@
   :config
   ;; Enable visual-line-mode (word wrap)
   (add-hook 'markdown-mode-hook 'visual-line-mode)
+  (add-hook 'markdown-mode-hook 'variable-pitch-mode))
 
-  ;; Enable word-wrap (break on whitespace)
-  (add-hook 'markdown-mode-hook (lambda () (setq word-wrap t))))
+;;; Zig
+(use-package zig-mode
+  :ensure t
+  :mode "\\.zig\\'"
+  :hook (zig-mode . eglot-ensure))
 
-;; Optional: If you want to enable word-wrap globally
-(setq-default word-wrap t)
+;;; Go
+(use-package go-mode
+  :ensure t
+  :mode "\\.go\\'"
+  :hook (go-mode . eglot-ensure)
+  :config
+  (require 'eglot)
+  (add-to-list 'eglot-server-programs
+	       '(go-mode . ("/home/knl/go/bin/gopls"))))
 
-;; Optional: If you want to enable visual-line-mode globally
-;; (global-visual-line-mode 1)
+
+;;; VSC mode configurations
+(setq vc-follow-symlinks t)
 
 (provide 'init)
 ;;; init.el ends here

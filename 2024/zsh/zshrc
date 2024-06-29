@@ -1,7 +1,7 @@
 # fpath=($fpath /usr/share/zsh/5.8.1/functions)
 
 # Editors
-export EDITOR="nvim"
+export EDITOR="/home/knl/bin/e"
 
 # Extended globbing is really fun
 setopt extendedglob
@@ -25,7 +25,7 @@ setopt EXTENDED_HISTORY
 setopt INC_APPEND_HISTORY_TIME
 
 # Adjust path
-export PATH=/home/$USER/bin:$PATH
+export PATH=/home/$USER/bin:$PATH:/snap/bin
 
 # Enable colours
 autoload -U colors && colors
