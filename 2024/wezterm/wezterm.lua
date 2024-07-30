@@ -1,8 +1,8 @@
 local wezterm = require 'wezterm'
 local config = {}
 
--- config.color_scheme = 'Ura (Gogh)' -- 'Clrs (Gogh)'
-config.color_scheme = 'Aura (Gogh)' -- 'Argonaut (Gogh)' -- Argonaut
+config.color_scheme = 'Ura (Gogh)' -- 'Clrs (Gogh)'
+-- config.color_scheme = 'Aura (Gogh)' -- 'Argonaut (Gogh)' -- Argonaut
 config.font = wezterm.font 'Berkeley Mono'
 config.font_size = 10
 config.line_height = 1.0
