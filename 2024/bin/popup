@@ -1,0 +1,9 @@
+#!/bin/bash
+
+# Check if the popup session exists
+if ! tmux has-session -t dex 2>/dev/null; then
+ tmux new-session -d -s dex -c "/home/knl/dex"
+fi
+
+# Attach to the dex session
+tmux attach-session -t dex
