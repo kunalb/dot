@@ -1,7 +1,7 @@
 fpath=($fpath /usr/share/zsh/5.8.1/functions)
 
 # Editors
-export EDITOR="nvim"
+export EDITOR="e"
 
 # Extended globbing is really fun
 setopt extendedglob
@@ -120,3 +120,8 @@ zle -N _tmux_pane_words
 bindkey '^U' _tmux_pane_words
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+function qq {
+  /home/kunalb/dev/qq/qq.sh "$@"
+}
+

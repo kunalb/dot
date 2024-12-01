@@ -5,7 +5,7 @@
 #+BEGIN_SRC emacs-lisp
 (require 'package)
 (setq package-archives
-      '(("melpa" . "http://melpa.org/packages/")
+      '(("melpa" . "https://melpa.org/packages/")
         ("elpa" . "http://elpa.gnu.org/packages/")
         ("nongnu-elpa" . "https://elpa.nongnu.org/nongnu/")
         ))
@@ -346,7 +346,7 @@ Do this first to try to get the flicker in the gui out of the way quickly
 * Version Control
 ** Disable by default
 #+BEGIN_SRC emacs-lisp
-(setq vc-handled-backends ())
+(setq vc-handled-backends '(Git))
 #+END_SRC
 ** Customize Monky, for when it's loaded
 *** Use command server for speed
