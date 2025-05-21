@@ -30,7 +30,7 @@ setopt INC_APPEND_HISTORY_TIME
 # Adjust path
 export PATH=/home/$USER/bin:/home/$USER/.local/bin:/usr/local/bin:$PATH
 export PATH="/usr/local/go/bin:$PATH"
-export PATH="/home/kunalb/go/bin:$PATH"
+export PATH="/home/kunalb/.local/bin:/home/kunalb/go/bin:$PATH"
 
 
 # Enable colours
@@ -80,17 +80,21 @@ compinit -i
 
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('/usr/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+__conda_setup="$('/home/kunalb/miniforge3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
 if [ $? -eq 0 ]; then
     eval "$__conda_setup"
 else
-    if [ -f "/usr/etc/profile.d/conda.sh" ]; then
-        . "/usr/etc/profile.d/conda.sh"
+    if [ -f "/home/kunalb/miniforge3/etc/profile.d/conda.sh" ]; then
+        . "/home/kunalb/miniforge3/etc/profile.d/conda.sh"
     else
-        export PATH="/usr/bin:$PATH"
+        export PATH="/home/kunalb/miniforge3/bin:$PATH"
     fi
 fi
 unset __conda_setup
+
+if [ -f "/home/kunalb/miniforge3/etc/profile.d/mamba.sh" ]; then
+    . "/home/kunalb/miniforge3/etc/profile.d/mamba.sh"
+fi
 # <<< conda initialize <<<
 
 export FZF_CTRL_R_OPTS="--preview 'echo {}' --preview-window down:3:hidden:wrap --bind '?:toggle-preview' --layout=reverse"
@@ -123,5 +127,12 @@ bindkey '^U' _tmux_pane_words
 
 function qq {
   /home/kunalb/dev/qq/qq.sh "$@"
+}
+
+cdr() {
+  local today=$(date +"%Y-%m-%d")
+  local rough_dir="$HOME/rough/$today/$1"
+  mkdir -p $rough_dir;
+  cd $rough_dir;
 }
 

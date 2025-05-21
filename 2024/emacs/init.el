@@ -1,4 +1,4 @@
-;;; init.el --- Emacs initialization file
+;;; init.el --- Emacs initialization file  -*- lexical-binding: t; -*-
 
 ;;; Commentary:
 ;; A refreshed emacs configuration with my most used packages and configurations.
@@ -85,14 +85,14 @@
 (use-package org
   :config
   (setq org-src-window-setup 'other-window
-	org-src-fontify-natively t
-	org-src-tab-acts-natively t
-	org-edit-src-content-indentation 0
-	org-fontify-quote-and-verse-blocks t
-	org-confirm-babel-evaluate nil
-	org-hide-emphasis-markers t
-	org-startup-with-inline-images t
-	org-fast-tag-selection-single-key 'expert)
+  org-src-fontify-natively t
+  org-src-tab-acts-natively t
+  org-edit-src-content-indentation 0
+  org-fontify-quote-and-verse-blocks t
+  org-confirm-babel-evaluate nil
+  org-hide-emphasis-markers t
+  org-startup-with-inline-images t
+  org-fast-tag-selection-single-key 'expert)
 
   (org-babel-do-load-languages
    'org-babel-load-languages
@@ -106,9 +106,9 @@
   (add-to-list 'org-src-lang-modes '("html" . web))
 
   (add-hook 'org-babel-after-execute-hook
-	    (lambda ()
-	      (when org-inline-image-overlays
-		(org-redisplay-inline-images))))
+      (lambda ()
+  (when org-inline-image-overlays
+    (org-redisplay-inline-images))))
 
   (add-hook 'org-mode-hook 'auto-fill-mode)
 
@@ -120,23 +120,23 @@
   (defun tag-at-point-in-heading ()
     "Returns the tag at the current point in the string"
     (let ((str (buffer-string))
-	  (begin (point))
-	  (end (point)))
+    (begin (point))
+    (end (point)))
       (while (not (equal (aref str begin) ?:))
-	(setq begin (- begin 1)))
+  (setq begin (- begin 1)))
       (while (not (equal (aref str end) ?:))
-	(setq end (+ end 1)))
+  (setq end (+ end 1)))
       (substring str (+ 1 begin) end)))
 
   (defun open-sparse-view ()
     "Shows a sparse tree on clicking a tag instead of org-tags-view"
     (when (and (org-element-lineage (org-element-context)
-				    '(headline inlinetask)
-				    t)
-	       (progn (save-excursion (beginning-of-line)
-				      (looking-at org-complex-heading-regexp))
-		      (and (match-beginning 5)
-			   (> (point) (match-beginning 5)))))
+      '(headline inlinetask)
+      t)
+   (progn (save-excursion (beginning-of-line)
+        (looking-at org-complex-heading-regexp))
+    (and (match-beginning 5)
+   (> (point) (match-beginning 5)))))
       (org-match-sparse-tree nil (concat "+" (tag-at-point-in-heading)))
       t))
 
@@ -183,12 +183,20 @@
 (setq Man-notify-method 'pushy)
 
 ;;; Editing Configuration
-(setq c-basic-offset 2
-      tab-width 2
-      indent-tabs-mode nil
-      auto-save-default nil
-      backup-directory-alist `((".*" . ,temporary-file-directory))
-      auto-save-file-name-transforms `((".*" ,temporary-file-directory t)))
+(setq-default c-basic-offset 2
+        tab-width 2
+        indent-tabs-mode nil
+        auto-save-default nil
+        backup-directory-alist `((".*" . ,temporary-file-directory))
+        auto-save-file-name-transforms `((".*" ,temporary-file-directory t)))
+
+;;; Make sure default is overridden
+(setq-default indent-tabs-mode nil)
+
+;;; For bash
+(add-hook 'sh-mode-hook
+       (lambda ()
+         (setq indent-tabs-mode nil)))
 
 ;;;; Smartparens
 (use-package smartparens
@@ -226,11 +234,11 @@
 (use-package web-mode
   :config
   (setq web-mode-markup-indent-offset 2
-	web-mode-css-indent-offset 2
-	web-mode-code-indent-offset 2
-	web-mode-style-padding 2
-	web-mode-script-padding 2
-	web-mode-auto-quote-style 2))
+  web-mode-css-indent-offset 2
+  web-mode-code-indent-offset 2
+  web-mode-style-padding 2
+  web-mode-script-padding 2
+  web-mode-auto-quote-style 2))
 
 ;;;; Monky (Mercurial)
 (use-package monky
@@ -250,6 +258,7 @@
 (defun path ()
   "Display the full path of the current buffer."
   (interactive)
+  (kill-new (buffer-file-name))
   (message (buffer-file-name)))
 
 ;;; GDB Configuration
@@ -257,8 +266,8 @@
 
 ;;; Dired Configuration
 (add-hook 'dired-mode-hook
-	  (lambda ()
-	    (dired-hide-details-mode 1)))
+    (lambda ()
+      (dired-hide-details-mode 1)))
 
 (setq dired-use-ls-dired nil)
 
@@ -270,11 +279,11 @@
   :hook (prog-mode . company-mode)
   :config
   (add-hook 'company-mode-hook
-	    (lambda ()
-	      (define-key evil-insert-state-map (kbd "C-.") 'company-complete)))
+      (lambda ()
+  (define-key evil-insert-state-map (kbd "C-.") 'company-complete)))
   (setq company-tooltip-align-annotations t
-	company-idle-delay 0
-	company-minimum-prefix-length 2))
+  company-idle-delay 0.1
+  company-minimum-prefix-length 2))
 
 ;;; Buffer Management
 (defun close-all-buffers ()
@@ -288,7 +297,7 @@
   (dolist (buf (buffer-list))
     (with-current-buffer buf
       (when (buffer-file-name)
-	(revert-buffer t t t)))))
+  (revert-buffer t t t)))))
 
 ;;; Theme Manipulation
 (defun desaturate-color (color-hex)
@@ -297,11 +306,11 @@
   (apply
    'color-rgb-to-hex
    (append (apply
-	    'color-hsl-to-rgb
-	    (apply
-	     'color-desaturate-hsl
-	     `(,@(apply 'color-rgb-to-hsl (color-name-to-rgb color-hex)) 100)))
-	   '(2))))
+      'color-hsl-to-rgb
+      (apply
+       'color-desaturate-hsl
+       `(,@(apply 'color-rgb-to-hsl (color-name-to-rgb color-hex)) 100)))
+     '(2))))
 
 (defun transform-theme-colors (fn)
   "Apply FN to the colors on every active face.
@@ -313,22 +322,22 @@
    (lambda (face)
      (mapc
       (lambda (attr)
-	(let ((current (face-attribute face attr)))
-	  (unless (or (not current)
-		      (listp current)
-		      (string= current "unspecified")
-		      (string= current "t"))
-	    (set-face-attribute face nil attr (funcall fn face current)))))
+  (let ((current (face-attribute face attr)))
+    (unless (or (not current)
+    (listp current)
+    (string= current "unspecified")
+    (string= current "t"))
+      (set-face-attribute face nil attr (funcall fn face current)))))
       '(:foreground :background :underline :overline :box :strike-through
-		    :distant-foreground))
+  :distant-foreground))
      (mapc
       (lambda (complex-attr)
-	(let* ((full (copy-tree (face-attribute face complex-attr)))
-	       (current (if (listp full) (member :color full))))
-	  (unless (or (not current)
-		      (not (listp full)))
-	    (setcar (cdr current) (funcall fn face (cadr current)))
-	    (set-face-attribute face nil complex-attr full))))
+  (let* ((full (copy-tree (face-attribute face complex-attr)))
+   (current (if (listp full) (member :color full))))
+    (unless (or (not current)
+    (not (listp full)))
+      (setcar (cdr current) (funcall fn face (cadr current)))
+      (set-face-attribute face nil complex-attr full))))
       '(:underline :overline :box)))
    (face-list)))
 
@@ -350,9 +359,9 @@
       (color-complement color))))
   (let ((current-ns-appearance (assoc 'ns-appearance default-frame-alist)))
     (cond ((eq (cdr current-ns-appearance) 'light)
-	   (setf (cdr current-ns-appearance) 'dark))
-	  ((eq (cdr current-ns-appearance) 'dark)
-	   (setf (cdr current-ns-appearance) 'light)))))
+     (setf (cdr current-ns-appearance) 'dark))
+    ((eq (cdr current-ns-appearance) 'dark)
+     (setf (cdr current-ns-appearance) 'light)))))
 
 ;;; Mode Line Configuration
 (setq mode-line-format
@@ -380,8 +389,8 @@
 (use-package markdown-mode
   :ensure t
   :mode (("README\\.md\\'" . gfm-mode)
-	 ("\\.md\\'" . markdown-mode)
-	 ("\\.markdown\\'" . markdown-mode))
+   ("\\.md\\'" . markdown-mode)
+   ("\\.markdown\\'" . markdown-mode))
   :init (setq markdown-command "multimarkdown")
   :config
   ;; Enable visual-line-mode (word wrap)
@@ -402,11 +411,14 @@
   :config
   (require 'eglot)
   (add-to-list 'eglot-server-programs
-	       '(go-mode . ("/home/knl/go/bin/gopls"))))
+   '(go-mode . ("/home/knl/go/bin/gopls"))))
 
 
 ;;; VSC mode configurations
 (setq vc-follow-symlinks t)
+
+;;; Bookmarks
+(setq bookmark-save-flag 1)
 
 (provide 'init)
 ;;; init.el ends here
