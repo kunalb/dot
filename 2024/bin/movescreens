@@ -1,0 +1,27 @@
+#!/bin/env python3
+
+
+import json
+import subprocess
+
+
+def r(cmd):
+    return subprocess.run(list(cmd.split(" ")), capture_output=True).stdout.decode(
+        "utf-8"
+    )
+
+
+def move_workspaces():
+    workspaces = json.loads(r("i3-msg -t get_workspaces"))
+    focused = next(w for w in workspaces if w["focused"])
+
+    for workspace in workspaces:
+        if workspace != focused:
+            r(f"i3-msg -- workspace {workspace['num']}")
+            r(f"i3-msg -- move workspace to output {focused['output']}")
+
+    r(f"i3-msg -- workspace {focused['num']}")
+
+
+if __name__ == "__main__":
+    move_workspaces()

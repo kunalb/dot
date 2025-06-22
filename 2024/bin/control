@@ -1,0 +1,2 @@
+#!/bin/bash
+XDG_CURRENT_DESKTOP=gnome exec gnome-control-center
