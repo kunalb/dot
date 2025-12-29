@@ -1,10 +1,13 @@
 # fpath=($fpath /usr/share/zsh/5.8.1/functions)
 
 # Editors
-export EDITOR=nvim
+export EDITOR=e
 
 # Extended globbing is really fun
 setopt extendedglob
+
+# Interactive comments are great for recordings, etc.
+setopt interactive_comments
 
 # But only with Vim bindings
 bindkey -v
@@ -26,6 +29,7 @@ setopt INC_APPEND_HISTORY_TIME
 
 # Adjust path
 export PATH=/home/$USER/bin:/home/$USER/.local/bin:$PATH:/snap/bin
+export PATH=$PATH:/home/$USER/builds/nim/bin
 
 # Enable colours
 autoload -U colors && colors
@@ -41,6 +45,9 @@ PROMPT="%(?..%F{red}# ┈ %B%?%b%f
 
 # Load aliases
 test -f ~/.aliases && . ~/.aliases
+
+# Load keys
+test -f ~/.keys && . ~/.keys
 
 # Nicer tab completion
 zstyle ':completion:*' menu select
@@ -111,3 +118,13 @@ if [ -f "/home/knl/builds/miniforge3/etc/profile.d/mamba.sh" ]; then
     . "/home/knl/builds/miniforge3/etc/profile.d/mamba.sh"
 fi
 # <<< conda initialize <<<
+
+export ET_NO_TELEMETRY=1
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+# opam configuration
+[[ ! -r /home/knl/.opam/opam-init/init.zsh ]] || source /home/knl/.opam/opam-init/init.zsh  > /dev/null 2> /dev/null
+alias claude="/home/knl/.claude/local/claude"
