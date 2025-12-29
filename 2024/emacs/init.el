@@ -6,22 +6,51 @@
 
 
 ;;; Package Management
-;;;; Bootstrap use-package
-(require 'package)
 (setq package-enable-at-startup nil)
-(add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
-(add-to-list 'package-archives '("elpa" . "http://elpa.gnu.org/packages/"))
-(add-to-list 'package-archives '("nongnu-elpa" . "https://elpa.nongnu.org/nongnu/"))
-(package-initialize)
 
-(unless (package-installed-p 'use-package)
-  (package-refresh-contents)
-  (package-install 'use-package))
+;;;; Bootstrap straight.el
+(defvar bootstrap-version)
+(let ((bootstrap-file
+       (expand-file-name
+	"straight/repos/straight.el/bootstrap.el"
+	(or (bound-and-true-p straight-base-dir)
+	    user-emacs-directory)))
+      (bootstrap-version 7))
+  (unless (file-exists-p bootstrap-file)
+    (with-current-buffer
+	(url-retrieve-synchronously
+	 "https://raw.githubusercontent.com/radian-software/straight.el/develop/install.el"
+	 'silent 'inhibit-cookies)
+      (goto-char (point-max))
+      (eval-print-last-sexp)))
+  (load bootstrap-file nil 'nomessage))
 
-(eval-when-compile
-  (require 'use-package))
+;;;; Bootstrap use-package
+(setq straight-use-package-by-default t)
+(straight-use-package 'use-package)
+(straight-use-package 'bind-key)
+(require 'use-package)
 (require 'bind-key)
-(setq use-package-always-ensure t)
+
+(use-package project
+  :straight (:type built-in))
+
+; (require 'package)
+; (setq package-enable-at-startup nil)
+; (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
+; (add-to-list 'package-archives '("elpa" . "http://elpa.gnu.org/packages/"))
+; (add-to-list 'package-archives '("nongnu-elpa" . "https://elpa.nongnu.org/nongnu/"))
+; (package-initialize)
+
+; (unless (package-installed-p 'use-package)
+;   (package-refresh-contents)
+;   (package-install 'use-package))
+
+; (setq use-package-always-ensure t)
+
+; (eval-when-compile
+;   (require 'use-package))
+; (require 'bind-key)
 
 ;;; Customization
 (setq custom-file (concat user-emacs-directory "custom.el"))
@@ -409,10 +438,20 @@
   :mode "\\.go\\'"
   :hook (go-mode . eglot-ensure)
   :config
-  (require 'eglot)
-  (add-to-list 'eglot-server-programs
-   '(go-mode . ("/home/knl/go/bin/gopls"))))
+  (with-eval-after-load 'eglot
+    (add-to-list 'eglot-server-programs
+		 '(go-mode . ("/home/knl/go/bin/gopls")))))
 
+
+;;; C
+(use-package eglot
+  :ensure t
+  :config
+  (add-to-list 'eglot-server-programs
+   '(go-mode . ("/home/knl/go/bin/gopls"))
+    ((c-mode c++-mode) . ("clangd" "-j=8" "--clang-tidy" "--enable-config"))))
+
+(global-set-key (kbd "C-c o") 'ff-find-other-file)
 
 ;;; VSC mode configurations
 (setq vc-follow-symlinks t)
@@ -421,4 +460,11 @@
 (setq bookmark-save-flag 1)
 
 (provide 'init)
+
+;;; Python
+(use-package python-mode
+  :ensure t
+  :hook (python-mode . eglot-ensure)
+  :config
+  (add-to-list 'eglot-server-programs '(python-mode . ("pylsp"))))
 ;;; init.el ends here
