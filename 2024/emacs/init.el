@@ -12,15 +12,15 @@
 (defvar bootstrap-version)
 (let ((bootstrap-file
        (expand-file-name
-	"straight/repos/straight.el/bootstrap.el"
-	(or (bound-and-true-p straight-base-dir)
-	    user-emacs-directory)))
+  "straight/repos/straight.el/bootstrap.el"
+  (or (bound-and-true-p straight-base-dir)
+      user-emacs-directory)))
       (bootstrap-version 7))
   (unless (file-exists-p bootstrap-file)
     (with-current-buffer
-	(url-retrieve-synchronously
-	 "https://raw.githubusercontent.com/radian-software/straight.el/develop/install.el"
-	 'silent 'inhibit-cookies)
+  (url-retrieve-synchronously
+   "https://raw.githubusercontent.com/radian-software/straight.el/develop/install.el"
+   'silent 'inhibit-cookies)
       (goto-char (point-max))
       (eval-print-last-sexp)))
   (load bootstrap-file nil 'nomessage))
@@ -440,7 +440,7 @@
   :config
   (with-eval-after-load 'eglot
     (add-to-list 'eglot-server-programs
-		 '(go-mode . ("/home/knl/go/bin/gopls")))))
+     '(go-mode . ("/home/knl/go/bin/gopls")))))
 
 
 ;;; C
@@ -449,7 +449,7 @@
   :config
   (add-to-list 'eglot-server-programs
    '(go-mode . ("/home/knl/go/bin/gopls"))
-    ((c-mode c++-mode) . ("clangd" "-j=8" "--clang-tidy" "--enable-config"))))
+   '((c-mode c++-mode) . ("clangd" "-j=8" "--clang-tidy" "--enable-config"))))
 
 (global-set-key (kbd "C-c o") 'ff-find-other-file)
 
