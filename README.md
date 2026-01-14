@@ -1,21 +1,24 @@
 # dot
 
-## 2024
-I'm currently working through refreshing my dot files and reconciling
-the different versions across different laptops and systems.
+Personal dotfiles for a Linux Wayland-based development environment.
 
-To prevent unhappy accidents, newer versions are collected in the
-"2024" version, which also respect `$XDG_CONFIG`. Once complete, I'll
-use the [Arch wiki](https://wiki.archlinux.org/title/Dotfiles) set up
-to directly clone this repository to my config directory.
+## Contents
 
-tl;dr; expect files to move a lot.
+- `bin/` - Utility scripts (clipboard, editor launcher, screen management)
+- `emacs/` - Emacs configuration with straight.el + evil-mode
+- `gdb/` - GDB debugger settings
+- `sway/` - Sway window manager (Wayland)
+- `tmux/` - Terminal multiplexer
+- `waybar/` - Status bar for Sway
+- `wezterm/` - Terminal emulator
+- `zsh/` - Shell configuration
 
+## Software Stack
 
-### Software I currently use
-- tmux
-- emacs
-- vim
-- sway
-- bemenu
-- wezterm
+- **Window Manager**: Sway (Wayland)
+- **Terminal**: WezTerm
+- **Editor**: Emacs (evil-mode)
+- **Shell**: Zsh
+- **Multiplexer**: tmux
+- **Status Bar**: Waybar
+- **Launcher**: bemenu
