@@ -1,10 +1,13 @@
-fpath=($fpath /usr/share/zsh/5.8.1/functions)
+# fpath=($fpath /usr/share/zsh/5.8.1/functions)
 
 # Editors
-export EDITOR="e"
+export EDITOR=e
 
 # Extended globbing is really fun
 setopt extendedglob
+
+# Interactive comments are great for recordings, etc.
+setopt interactive_comments
 
 # But only with Vim bindings
 bindkey -v
@@ -24,23 +27,15 @@ export SAVEHIST=100000
 setopt EXTENDED_HISTORY
 setopt INC_APPEND_HISTORY_TIME
 
-# Set up java
-#export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk1.8.0_131.jdk/Contents/Home
-
 # Adjust path
-export PATH=/home/$USER/bin:/home/$USER/.local/bin:/usr/local/bin:$PATH
-export PATH="/usr/local/go/bin:$PATH"
-export PATH="/home/kunalb/.local/bin:/home/kunalb/go/bin:$PATH"
-
+export PATH=/home/$USER/bin:/home/$USER/.local/bin:$PATH:/snap/bin
+export PATH=$PATH:/home/$USER/builds/nim/bin
 
 # Enable colours
 autoload -U colors && colors
 
 autoload -Uz compinit
 compinit -i
-
-# zsh-autocomplete
-# source ~/builds/zsh-autocomplete/zsh-autocomplete.plugin.zsh
 
 # Nicer prompts
 line="$(repeat 1000 echo -n ┈)"
@@ -51,51 +46,26 @@ PROMPT="%(?..%F{red}# ┈ %B%?%b%f
 # Load aliases
 test -f ~/.aliases && . ~/.aliases
 
+# Load keys
+test -f ~/.keys && . ~/.keys
+
 # Nicer tab completion
 zstyle ':completion:*' menu select
-
-# Load laptop specific settings
-test -f ~/.localzshrc && . ~/.localzshrc
 
 # Helper functions
 scan() {
     grep -i $1 -r .
 }
 
-test -f ~/.cargo/env && source $HOME/.cargo/env
+# Vim editing
+autoload edit-command-line
+zle -N edit-command-line
+bindkey -M vicmd m edit-command-line
 
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-
-
-export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
-
-# Completions
-fpath+=~/.zfunc
 
 autoload -Uz compinit
 compinit -i
 
-
-# >>> conda initialize >>>
-# !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('/home/kunalb/miniforge3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
-if [ $? -eq 0 ]; then
-    eval "$__conda_setup"
-else
-    if [ -f "/home/kunalb/miniforge3/etc/profile.d/conda.sh" ]; then
-        . "/home/kunalb/miniforge3/etc/profile.d/conda.sh"
-    else
-        export PATH="/home/kunalb/miniforge3/bin:$PATH"
-    fi
-fi
-unset __conda_setup
-
-if [ -f "/home/kunalb/miniforge3/etc/profile.d/mamba.sh" ]; then
-    . "/home/kunalb/miniforge3/etc/profile.d/mamba.sh"
-fi
-# <<< conda initialize <<<
 
 export FZF_CTRL_R_OPTS="--preview 'echo {}' --preview-window down:3:hidden:wrap --bind '?:toggle-preview' --layout=reverse"
 
@@ -123,16 +93,38 @@ _tmux_pane_words() {
 zle -N _tmux_pane_words
 bindkey '^U' _tmux_pane_words
 
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh || true
 
+# Function to interact with claude
 function qq {
-  /home/kunalb/dev/qq/qq.sh "$@"
+  /home/knl/dev/qq/qq.sh "$@"
 }
 
-cdr() {
-  local today=$(date +"%Y-%m-%d")
-  local rough_dir="$HOME/rough/$today/$1"
-  mkdir -p $rough_dir;
-  cd $rough_dir;
-}
+# >>> conda initialize >>>
+# !! Contents within this block are managed by 'conda init' !!
+__conda_setup="$('/home/knl/builds/miniforge3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+if [ $? -eq 0 ]; then
+    eval "$__conda_setup"
+else
+    if [ -f "/home/knl/builds/miniforge3/etc/profile.d/conda.sh" ]; then
+	. "/home/knl/builds/miniforge3/etc/profile.d/conda.sh"
+    else
+	export PATH="/home/knl/builds/miniforge3/bin:$PATH"
+    fi
+fi
+unset __conda_setup
 
+if [ -f "/home/knl/builds/miniforge3/etc/profile.d/mamba.sh" ]; then
+    . "/home/knl/builds/miniforge3/etc/profile.d/mamba.sh"
+fi
+# <<< conda initialize <<<
+
+export ET_NO_TELEMETRY=1
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+# opam configuration
+[[ ! -r /home/knl/.opam/opam-init/init.zsh ]] || source /home/knl/.opam/opam-init/init.zsh  > /dev/null 2> /dev/null
+alias claude="/home/knl/.claude/local/claude"
