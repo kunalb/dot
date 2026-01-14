@@ -14,18 +14,23 @@ set $down j
 set $up k
 set $right l
 # Your preferred terminal emulator
-set $term alacritty
+set $term wezterm
 # Your preferred application launcher
 # Note: pass the final command to swaymsg so that the resulting window can be opened
 # on the original workspace that the command was run on.
 bar swaybar_command waybar
 
-set $menu bemenu-run -p "" --no-exec --line-height 20 -m 0 -l 5 | xargs swaymsg exec --
+# set $menu bemenu-run -p "" --no-exec --line-height 20 -m 0 -l 5 --fn "Berkeley Mono 11" -m focused | xargs swaymsg exec --
+set $menu /home/kunalb/.cargo/bin/kickoff
+
+# exec dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=sway
+exec mako
 
 ### Output configuration
 #
 # Default wallpaper (more resolutions are available in /usr/share/backgrounds/sway/)
-output * bg #111111 solid_color
+# output * bg /home/kunalb/Pictures/complain.drawio.png fill
+output * bg #000000 solid_color
 #
 # Example configuration:
 #
@@ -139,6 +144,9 @@ output * bg #111111 solid_color
 
     bindsym $mod+greater move workspace to output right
     bindsym $mod+less move workspace to output left
+
+    bindsym $mod+Ctrl+greater move workspace to output next
+    bindsym $mod+Ctrl+less move workspace to output prev
 #
 # Layout stuff:
 #
@@ -202,6 +210,7 @@ mode "resize" {
 bindsym $mod+r mode "resize"
 
 default_border pixel 1
+client.focused #aaaaaa #aaaaaa #000000 #ff0000
 
 #
 # Status Bar:
@@ -230,5 +239,16 @@ input type:keyboard {
 }
 
 exec_always nm-applet --indicator
+
+for_window [class="Tomboy"] floating enable
+
+# Zoom
+for_window [app_id="zoom" title="^zoom$"] border none, floating enable
+# For specific Zoom windows
+for_window [app_id="zoom" title="^(Zoom|About)$"] border pixel, floating enable
+for_window [app_id="zoom" title="Settings"] floating enable, floating_minimum_size 960 x 700
+
+for_window [class="Zoom"] floating enable
+
 
 include /etc/sway/config.d/*
